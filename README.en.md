@@ -21,7 +21,7 @@ This project provides a series of learning assistance tools suitable for primary
   - Glazed Yellow: Wei-Jin to Sui-Tang Dynasty
   - Blue & White: Song-Yuan-Ming-Qing (including Republic)
 
-### 2. Chinese Stroke Buddy (ChineseStrokeBuddy.html)
+### 2. Chinese Stroke Buddy (chinese-stroke-buddy.html)
 - Chinese character stroke learning tool
 
 ## 🚀 Usage

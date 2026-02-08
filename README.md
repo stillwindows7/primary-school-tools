@@ -21,7 +21,7 @@
   - 琉璃黄：魏晋至隋唐
   - 青花蓝：宋元明清（含民国）
 
-### 2. 中文字笔划助手 (ChineseStrokeBuddy.html)
+### 2. 中文字笔划助手 (chinese-stroke-buddy.html)
 - 汉字笔划学习工具
 
 ## 🚀 使用方法
