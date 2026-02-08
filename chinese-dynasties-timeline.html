@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国历代朝代时间线 - 趣味历史探险</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif SC', 'STSong', 'SimSun', serif;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(200, 180, 150, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(180, 160, 130, 0.1) 0%, transparent 50%),
+                linear-gradient(180deg, #F8F5F0 0%, #F5F0E8 50%, #F0EBE3 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 水墨纹理效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(100, 100, 100, 0.03) 0%, transparent 25%),
+                radial-gradient(circle at 85% 40%, rgba(100, 100, 100, 0.02) 0%, transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(100, 100, 100, 0.025) 0%, transparent 35%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(248, 245, 240, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 24px 50px;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+            border-bottom: 2px solid rgba(200, 160, 100, 0.3);
+        }
+
+        /* 回纹装饰边框 */
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #C8A080 0px,
+                #C8A080 10px,
+                transparent 10px,
+                transparent 20px
+            );
+            opacity: 0.3;
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2.4em;
+            font-weight: 600;
+            color: #8B4513;
+            letter-spacing: 8px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+
+        /* 印章装饰 */
+        .header h1::before {
+            content: '史';
+            position: absolute;
+            left: -45px;
+            width: 36px;
+            height: 36px;
+            background: #C84032;
+            color: #FFF;
+            font-size: 0.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(200, 64, 50, 0.3);
+            font-weight: bold;
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            left: -45px;
+            width: 36px;
+            height: 36px;
+            border: 2px solid #C84032;
+            border-radius: 4px;
+            opacity: 0.2;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .zoom-btn {
+            background: linear-gradient(135deg, #D4A058, #C89050);
+            border: none;
+            color: #FFF;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(200, 144, 80, 0.25);
+        }
+
+        .zoom-btn:hover {
+            background: linear-gradient(135deg, #E0B060, #D4A058);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 144, 80, 0.35);
+        }
+
+        .zoom-btn:active {
+            transform: translateY(0);
+        }
+
+        .zoom-info {
+            color: #5D4E37;
+            font-size: 0.95em;
+            font-weight: 500;
+            padding: 10px 18px;
+            background: rgba(200, 160, 100, 0.15);
+            border-radius: 6px;
+            border: 1px solid rgba(200, 160, 100, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .timeline-container {
+            position: fixed;
+            top: 100px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            cursor: grab;
+            user-select: none;
+            z-index: 10;
+        }
+
+        .timeline-container.dragging {
+            cursor: grabbing;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            min-width: 100%;
+            min-height: 100%;
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+            padding: 60px 40px;
+        }
+
+        .timeline-axis {
+            position: relative;
+            height: 400px;
+            margin: 40px 0;
+            min-width: 6000px;
+        }
+
+        /* 中国风时间轴 - 金色主线 */
+        .timeline-axis::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 3px;
+            background: linear-gradient(90deg,
+                #C84032 0%,
+                #D4A058 20%,
+                #5D8C58 40%,
+                #4A7C98 60%,
+                #6B5B8E 80%,
+                #8B6B8E 100%
+            );
+            transform: translateY(-50%);
+        }
+
+        /* 时间点装饰 - 祥云纹 */
+        .timeline-axis::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 3px;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 98px,
+                #D4A058 98px,
+                #D4A058 102px
+            );
+            transform: translateY(-50%);
+        }
+
+        .dynasty-block {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            border: 4px solid #FFF;
+            box-shadow:
+                0 4px 20px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(200, 160, 100, 0.3),
+                inset 0 0 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* 交替上下排列 */
+        .dynasty-block:nth-child(odd) {
+            top: 30px;
+        }
+
+        .dynasty-block:nth-child(even) {
+            top: 230px;
+        }
+
+        /* 朝代块悬停效果 */
+        .dynasty-block:hover {
+            transform: scale(1.15);
+            box-shadow:
+                0 8px 30px rgba(0, 0, 0, 0.2),
+                0 0 0 3px rgba(212, 160, 88, 0.5),
+                inset 0 0 40px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            border-color: #FFF;
+        }
+
+        /* 先秦至汉朝 - 朱砂红 */
+        .dynasty-block.ancient {
+            background: linear-gradient(145deg, #E86858 0%, #C84032 50%, #A83028 100%);
+        }
+
+        /* 魏晋至隋唐 - 琉璃黄 */
+        .dynasty-block.middle {
+            background: linear-gradient(145deg, #E8C070 0%, #D4A058 50%, #B89048 100%);
+        }
+
+        /* 宋元明清 - 青花蓝 */
+        .dynasty-block.late {
+            background: linear-gradient(145deg, #6B9CC8 0%, #4A7C98 50%, #386078 100%);
+        }
+
+        .dynasty-name {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #FFF;
+            margin-bottom: 6px;
+            letter-spacing: 4px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        .dynasty-years {
+            font-size: 0.75em;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+            line-height: 1.3;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .dynasty-duration {
+            font-size: 0.8em;
+            color: #FFF;
+            margin-top: 6px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 3px 10px;
+            border-radius: 10px;
+        }
+
+        .detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(45, 40, 35, 0.85);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .detail-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .detail-card {
+            background: linear-gradient(145deg, #FAF8F5 0%, #F5F0E8 100%);
+            border-radius: 8px;
+            max-width: 880px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px 50px;
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(200, 160, 100, 0.2);
+            position: relative;
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* 宣纸纹理 */
+        .detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(180, 160, 130, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(180, 160, 130, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(40px) scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid rgba(200, 64, 50, 0.3);
+            color: #C84032;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: #C84032;
+            color: #FFF;
+            transform: rotate(90deg);
+        }
+
+        .detail-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(200, 160, 100, 0.3);
+            position: relative;
+        }
+
+        /* 印章装饰 */
+        .detail-header::after {
+            content: '印';
+            position: absolute;
+            right: 0;
+            bottom: 20px;
+            width: 50px;
+            height: 50px;
+            background: #C84032;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            opacity: 0.15;
+            font-weight: bold;
+        }
+
+        .detail-title {
+            font-size: 2.8em;
+            font-weight: 600;
+            color: #8B4513;
+            margin-bottom: 10px;
+            letter-spacing: 8px;
+            position: relative;
+        }
+
+        .detail-period {
+            font-size: 1.2em;
+            color: #6B5B4E;
+            font-weight: 500;
+            letter-spacing: 2px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background: rgba(200, 160, 100, 0.08);
+            padding: 18px 20px;
+            border-radius: 6px;
+            border: 1px solid rgba(200, 160, 100, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .info-box:hover {
+            background: rgba(200, 160, 100, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .info-label {
+            font-size: 0.85em;
+            color: #8B7B6E;
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .info-value {
+            font-size: 1.05em;
+            color: #5D4E37;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #8B4513;
+            margin-bottom: 16px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            padding-left: 16px;
+            border-left: 3px solid #C84032;
+        }
+
+        .section-content {
+            color: #5D4E37;
+            line-height: 1.8;
+            font-size: 1.05em;
+            padding: 20px 24px;
+            background: rgba(200, 160, 100, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid rgba(200, 160, 100, 0.3);
+        }
+
+        .achievements-list, .events-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .achievements-list li, .events-list li {
+            padding: 14px 20px;
+            margin-bottom: 12px;
+            background: rgba(200, 160, 100, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid rgba(212, 160, 88, 0.5);
+            color: #5D4E37;
+            position: relative;
+            padding-left: 45px;
+            transition: all 0.3s ease;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+
+        .achievements-list li:hover, .events-list li:hover {
+            background: rgba(212, 160, 88, 0.12);
+            border-left-color: #D4A058;
+            transform: translateX(6px);
+        }
+
+        .achievements-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 18px;
+            color: #C84032;
+            font-size: 0.8em;
+        }
+
+        .events-list li::before {
+            content: '●';
+            position: absolute;
+            left: 20px;
+            color: #4A7C98;
+        }
+
+        .legend {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(248, 245, 240, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 20px 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(200, 160, 100, 0.3);
+            z-index: 50;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .legend:hover {
+            opacity: 1;
+        }
+
+        .legend-title {
+            color: #8B4513;
+            font-weight: 600;
+            margin-bottom: 14px;
+            font-size: 1em;
+            letter-spacing: 2px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+            color: #5D4E37;
+            font-size: 0.9em;
+        }
+
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-color {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 3px solid #FFF;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .instructions {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            background: rgba(248, 245, 240, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 20px 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(200, 160, 100, 0.3);
+            z-index: 50;
+            color: #5D4E37;
+            font-size: 0.9em;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+
+        .instructions:hover {
+            opacity: 1;
+        }
+
+        .instructions div {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .instructions div:last-child {
+            margin-bottom: 0;
+        }
+
+        .instructions span {
+            color: #C84032;
+            font-weight: 500;
+        }
+
+        .copyright {
+            position: fixed;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #8B7B6E;
+            font-size: 0.75em;
+            letter-spacing: 1px;
+            z-index: 50;
+            opacity: 0.5;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(200, 160, 100, 0.1);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(200, 160, 100, 0.4);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(200, 160, 100, 0.6);
+        }
+
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 14px;
+            height: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(135deg, #ffeaa7, #fff);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 10px;
+            border: 3px solid #fff;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .timeline-container {
+                top: 160px;
+            }
+
+            .dynasty-block {
+                height: 160px;
+            }
+
+            .dynasty-name {
+                font-size: 1.2em;
+            }
+
+            .detail-card {
+                padding: 30px;
+            }
+
+            .detail-title {
+                font-size: 2em;
+            }
+
+            .legend, .instructions {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                right: auto;
+                margin: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>中国历代朝代时间线</h1>
+            <div class="controls">
+                <button class="zoom-btn" onclick="zoomIn()">放大</button>
+                <span class="zoom-info">缩放: <span id="zoom-level">100%</span></span>
+                <button class="zoom-btn" onclick="zoomOut()">缩小</button>
+                <button class="zoom-btn" onclick="resetZoom()">重置</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="timeline-container" id="timeline-container">
+        <div class="timeline-wrapper" id="timeline-wrapper">
+            <div class="timeline-axis" id="timeline-axis">
+                <!-- 朝代块将由JavaScript动态生成 -->
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <div><span>操作提示</span></div>
+        <div>点击朝代圆徽查看详细</div>
+        <div>拖拽时间线左右浏览</div>
+        <div>滚轮缩放视图</div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-title">历史时期分类</div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(145deg, #E86858, #A83028);"></div>
+            <span>先秦至汉朝</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(145deg, #E8C070, #B89048);"></div>
+            <span>魏晋至隋唐</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color" style="background: linear-gradient(145deg, #6B9CC8, #386078);"></div>
+            <span>宋元明清</span>
+        </div>
+    </div>
+
+    <div class="copyright">© 2025 版权所有 | 依然 Windows 7</div>
+
+    <div class="detail-modal" id="detail-modal">
+        <div class="detail-card" id="detail-card">
+            <!-- 详细信息将由JavaScript动态填充 -->
+        </div>
+    </div>
+
+    <script>
+        const dynasties = [
+            {
+                name: '夏朝',
+                period: '约前2070年 - 约前1600年',
+                startYear: -2070,
+                endYear: -1600,
+                duration: '约470年',
+                founder: '禹',
+                capital: '阳城(今河南登封)',
+                category: 'ancient',
+                achievements: [
+                    '中国第一个世袭制王朝',
+                    '青铜器开始出现',
+                    '已有历法,农业经济发展'
+                ],
+                events: [
+                    '大禹治水,建立夏朝',
+                    '少康中兴,复兴夏朝',
+                    '夏桀暴政,夏朝灭亡'
+                ],
+                culture: '夏朝是中国历史上第一个有文字记载的王朝,标志着中国进入文明时代。夏代以农业经济为主,管理制度严密,为后世奠定了基础。'
+            },
+            {
+                name: '商朝',
+                period: '约前1600年 - 约前1046年',
+                startYear: -1600,
+                endYear: -1046,
+                duration: '约554年',
+                founder: '汤',
+                capital: '亳(后迁至殷,今河南安阳)',
+                category: 'ancient',
+                achievements: [
+                    '甲骨文——中国最早的成熟文字',
+                    '青铜器铸造达到高峰(司母戊鼎)',
+                    '天文历法发展,记载日食月食'
+                ],
+                events: [
+                    '商汤灭夏,建立商朝',
+                    '盘庚迁殷,国力稳定',
+                    '商纣王暴政,商朝灭亡'
+                ],
+                culture: '商朝创造了灿烂的青铜文化,甲骨文的发现使商朝成为中国有确切文字记载的第一个王朝。商代青铜器工艺精湛,造型优美,反映了高度发达的手工业。'
+            },
+            {
+                name: '周朝',
+                period: '约前1046年 - 前256年',
+                startYear: -1046,
+                endYear: -256,
+                duration: '约790年',
+                founder: '姬发(周武王)',
+                capital: '西周:镐京(西安) | 东周:洛邑(洛阳)',
+                category: 'ancient',
+                achievements: [
+                    '分封制与宗法制确立',
+                    '礼乐文化繁荣',
+                    '春秋战国:百家争鸣(儒、道、墨、法等)',
+                    '《诗经》——最早的诗歌总集'
+                ],
+                events: [
+                    '周武王伐纣,建立周朝',
+                    '周公制礼作乐',
+                    '春秋五霸:齐桓公、晋文公、楚庄王等',
+                    '战国七雄:秦、齐、楚、燕、韩、赵、魏'
+                ],
+                culture: '周朝分为西周和东周,东周又分春秋战国。春秋战国时期是中国思想文化的黄金时代,诸子百家争鸣,儒家、道家、墨家、法家等思想流派涌现,奠定了中国传统文化的基础。'
+            },
+            {
+                name: '秦朝',
+                period: '前221年 - 前207年',
+                startYear: -221,
+                endYear: -207,
+                duration: '15年',
+                founder: '嬴政(秦始皇)',
+                capital: '咸阳',
+                category: 'ancient',
+                achievements: [
+                    '统一六国,建立中央集权制度',
+                    '统一文字、货币、度量衡',
+                    '修筑万里长城',
+                    '建立郡县制',
+                    '秦始皇兵马俑——世界第八大奇迹'
+                ],
+                events: [
+                    '前221年秦始皇统一六国',
+                    '焚书坑儒',
+                    '修建阿房宫和骊山陵墓',
+                    '陈胜吴广起义',
+                    '秦二世而亡'
+                ],
+                culture: '秦朝是中国历史上第一个大一统的中央集权国家,秦始皇创立的皇帝制度、郡县制、统一文字等措施对中国历史影响深远,奠定了两千多年封建社会的基本格局。'
+            },
+            {
+                name: '汉朝',
+                period: '前202年 - 220年',
+                startYear: -202,
+                endYear: 220,
+                duration: '422年',
+                founder: '刘邦(汉高祖)',
+                capital: '西汉:长安 | 东汉:洛阳',
+                category: 'ancient',
+                achievements: [
+                    '丝绸之路开辟,中西交流',
+                    '造纸术发明(东汉蔡伦改进)',
+                    '《史记》——司马迁著,纪传体通史',
+                    '独尊儒术,儒家思想成为正统',
+                    '张衡发明地动仪、浑天仪',
+                    '华佗发明麻沸散,世界最早的麻醉术'
+                ],
+                events: [
+                    '文景之治',
+                    '汉武帝刘彻:罢黜百家,独尊儒术',
+                    '卫青、霍去病击败匈奴',
+                    '张骞出使西域',
+                    '光武中兴(东汉刘秀)'
+                ],
+                culture: '汉朝是中国历史上最强盛的朝代之一,奠定了汉民族的基础。汉武帝时期国力达到顶峰,开辟丝绸之路,促进了中西方文化交流。汉代文化成就辉煌,《史记》、汉赋、科技发明等影响深远。'
+            },
+            {
+                name: '三国',
+                period: '220年 - 280年',
+                startYear: 220,
+                endYear: 280,
+                duration: '60年',
+                founder: '曹丕(魏)、刘备(蜀)、孙权(吴)',
+                capital: '魏:洛阳 | 蜀:成都 | 吴:建业(南京)',
+                category: 'middle',
+                achievements: [
+                    '诸葛亮改进连弩',
+                    '马钧发明翻车(灌溉工具)',
+                    '刘徽注解《九章算术》'
+                ],
+                events: [
+                    '官渡之战:曹操以少胜多',
+                    '赤壁之战:孙刘联军大败曹操',
+                    '三顾茅庐:刘备请诸葛亮出山',
+                    '七擒孟获:诸葛亮平定南蛮',
+                    '司马炎灭吴,统一全国'
+                ],
+                culture: '三国时期是中国历史上政权分裂的时期,魏、蜀、吴三国鼎立。这一时期战乱频繁,但也涌现了许多杰出人物和脍炙人口的故事,成为中国文学艺术的重要题材。'
+            },
+            {
+                name: '晋朝',
+                period: '265年 - 420年',
+                startYear: 265,
+                endYear: 420,
+                duration: '155年',
+                founder: '司马炎(晋武帝)',
+                capital: '西晋:洛阳 | 东晋:建康(南京)',
+                category: 'middle',
+                achievements: [
+                    '王羲之《兰亭序》——"天下第一行书"',
+                    '陶渊明田园诗',
+                    '《搜神记》等志怪小说'
+                ],
+                events: [
+                    '西晋统一全国',
+                    '八王之乱',
+                    '五胡乱华,西晋灭亡',
+                    '东晋偏安江南',
+                    '淝水之战:东晋以少胜多'
+                ],
+                culture: '晋朝分为西晋和东晋。西晋短暂统一后,北方陷入五胡乱华的动荡,东晋偏安江南。这一时期玄学盛行,书法艺术达到新高峰,王羲之被誉为"书圣"。'
+            },
+            {
+                name: '南北朝',
+                period: '420年 - 589年',
+                startYear: 420,
+                endYear: 589,
+                duration: '169年',
+                founder: '南朝:宋齐梁陈 | 北朝:北魏等',
+                capital: '南朝:建康 | 北朝:平城、洛阳等',
+                category: 'middle',
+                achievements: [
+                    '贾思勰《齐民要术》——最早农学专著',
+                    '郦道元《水经注》——地理名著',
+                    '祖冲之精确计算圆周率(3.1415926-3.1415927)',
+                    '北魏孝文帝改革,促进民族融合',
+                    '佛教文化繁荣(云冈石窟、龙门石窟)'
+                ],
+                events: [
+                    '北魏统一北方',
+                    '孝文帝迁都洛阳,推行汉化',
+                    '南朝文化繁荣',
+                    '侯景之乱'
+                ],
+                culture: '南北朝时期政权分立,但民族融合加速。北魏孝文帝改革促进了鲜卑族与汉族的融合。这一时期佛教盛行,石窟艺术达到高峰,科技成就显著,祖冲之的圆周率计算领先世界千年。'
+            },
+            {
+                name: '隋朝',
+                period: '581年 - 618年',
+                startYear: 581,
+                endYear: 618,
+                duration: '37年',
+                founder: '杨坚(隋文帝)',
+                capital: '大兴(今西安)',
+                category: 'middle',
+                achievements: [
+                    '开创科举制度',
+                    '开凿大运河,沟通南北',
+                    '赵州桥——世界最古老石拱桥',
+                    '《切韵》——音韵学专著'
+],
+                events: [
+                    '隋文帝统一全国,结束南北分裂',
+                    '开皇之治',
+                    '隋炀帝三征高句丽',
+                    '大运河开凿',
+                    '隋末农民起义'
+                ],
+                culture: '隋朝结束了长达近300年的南北分裂局面,开创了科举制度,对后世影响深远。大运河的开凿沟通了南北交通,促进了经济文化交流,但也因过度劳民伤财导致王朝短命。'
+            },
+            {
+                name: '唐朝',
+                period: '618年 - 907年',
+                startYear: 618,
+                endYear: 907,
+                duration: '289年',
+                founder: '李渊(唐高祖)',
+                capital: '长安',
+                category: 'middle',
+                achievements: [
+                    '贞观之治——政治清明,经济繁荣',
+                    '开元盛世——国力达到顶峰',
+                    '唐诗繁荣:李白、杜甫、白居易等',
+                    '雕版印刷术《金刚经》——世界最早印刷品',
+                    '火药发明',
+                    '鉴真东渡日本,玄奘西天取经'
+                ],
+                events: [
+                    '玄武门之变:李世民夺位',
+                    '贞观之治:唐太宗励精图治',
+                    '武则天称帝,建立武周',
+                    '开元盛世:唐玄宗前期',
+                    '安史之乱:唐朝由盛转衰',
+                    '黄巢起义'
+                ],
+                culture: '唐朝是中国历史上最繁荣强盛的朝代之一,政治开明,经济发达,文化灿烂,对外交往频繁。唐诗代表了中国古典诗歌的最高成就,长安成为世界性大都市,中国文化影响力达到巅峰。'
+            },
+            {
+                name: '五代十国',
+                period: '907年 - 960年',
+                startYear: 907,
+                endYear: 960,
+                duration: '53年',
+                founder: '后梁、后唐、后晋、后汉、后周',
+                capital: '多处',
+                category: 'middle',
+                achievements: [
+                    '火药开始用于军事',
+                    '《韩熙载夜宴图》等绘画名作',
+                    '南方经济继续发展'
+                ],
+                events: [
+                    '朱温灭唐,建立后梁',
+                    '五代更替频繁',
+                    '十国割据南方',
+                    '周世宗改革',
+                    '赵匡胤陈桥兵变'
+                ],
+                culture: '五代十国是唐朝灭亡后的分裂时期,北方五个朝代更替频繁,南方十国相对稳定。虽然政治动荡,但南方经济文化继续发展,为宋代繁荣奠定了基础。'
+            },
+            {
+                name: '宋朝',
+                period: '960年 - 1279年',
+                startYear: 960,
+                endYear: 1279,
+                duration: '319年',
+                founder: '赵匡胤(宋太祖)',
+                capital: '北宋:开封 | 南宋:临安(杭州)',
+                category: 'late',
+                achievements: [
+                    '活字印刷术(毕昇发明)',
+                    '火药广泛应用于军事',
+                    '指南针用于航海',
+                    '宋词繁荣:苏轼、李清照、辛弃疾等',
+                    '宋代绘画:《清明上河图》等',
+                    '理学兴起:程颢、程颐、朱熹等',
+                    '《资治通鉴》——司马光编年体通史'
+                ],
+                events: [
+                    '陈桥兵变,黄袍加身',
+                    '杯酒释兵权',
+                    '王安石变法',
+                    '靖康之变:北宋灭亡',
+                    '岳飞抗金',
+                    '南宋偏安'
+                ],
+                culture: '宋朝是中国历史上经济、文化、科技最繁荣的时代之一。四大发明中的三项(活字印刷、火药、指南针)在宋代完善或广泛应用。宋词与唐诗并称,理学成为官方哲学,商业经济高度发达。'
+            },
+            {
+                name: '元朝',
+                period: '1271年 - 1368年',
+                startYear: 1271,
+                endYear: 1368,
+                duration: '97年',
+                founder: '忽必烈(元世祖)',
+                capital: '大都(今北京)',
+                category: 'late',
+                achievements: [
+                    '疆域空前辽阔',
+                    '行省制度',
+                    '元曲繁荣:关汉卿、马致远等',
+                    '《马可·波罗游记》传播中国文化',
+                    '天文历法:郭守敬《授时历》'
+                ],
+                events: [
+                    '成吉思汗统一蒙古',
+                    '蒙古西征',
+                    '忽必烈建立元朝',
+                    '元朝灭南宋,统一全国',
+                    '红巾军起义'
+                ],
+                culture: '元朝是蒙古族建立的统一王朝,疆域空前辽阔,东西方文化交流频繁。元曲成为继唐诗、宋词之后的又一文学高峰。虽然统治者推行民族压迫政策,但促进了各民族融合。'
+            },
+            {
+                name: '明朝',
+                period: '1368年 - 1644年',
+                startYear: 1368,
+                endYear: 1644,
+                duration: '276年',
+                founder: '朱元璋(明太祖)',
+                capital: '北京(初都南京)',
+                category: 'late',
+                achievements: [
+                    '郑和七下西洋(1405-1433)',
+                    '《永乐大典》——世界最大百科全书',
+                    '《本草纲目》——李时珍医药巨著',
+                    '《天工开物》——宋应星科技百科',
+                    '明代小说:《三国演义》《水浒传》《西游记》《金瓶梅》',
+                    '紫禁城(故宫)建成'
+                ],
+                events: [
+                    '朱元璋建立明朝',
+                    '靖难之役:朱棣夺位',
+                    '明成祖迁都北京',
+                    '郑和下西洋',
+                    '土木堡之变',
+                    '戚继光抗倭',
+                    '李自成攻占北京,明朝灭亡'
+                ],
+                culture: '明朝是汉族建立的最后一个大一统王朝。明初国力强盛,郑和下西洋展示了中国强大的航海能力。明代小说、戏曲繁荣,四大名著中的三部成书于明代,科技著作丰富。'
+            },
+            {
+                name: '清朝',
+                period: '1644年 - 1911年',
+                startYear: 1644,
+                endYear: 1911,
+                duration: '267年',
+                founder: '皇太极(清太宗)、顺治帝入关',
+                capital: '北京',
+                category: 'late',
+                achievements: [
+                    '康乾盛世——清朝鼎盛时期',
+                    '平定三藩之乱',
+                    '收复台湾',
+                    '确定西藏政治制度',
+                    '《红楼梦》——曹雪芹',
+                    '《四库全书》——乾隆时期编纂'
+                ],
+                events: [
+                    '努尔哈赤建立后金',
+                    '清军入关,定都北京',
+                    '康熙平定三藩,收复台湾',
+                    '雍正改革',
+                    '乾隆六下江南',
+                    '鸦片战争(1840):中国近代史开端',
+                    '辛亥革命(1911):清朝灭亡'
+                ],
+                culture: '清朝是中国历史上最后一个封建王朝。康熙、雍正、乾隆三朝国力强盛,称为"康乾盛世",疆域辽阔,统一多民族国家得到巩固。但后期闭关锁国,导致落后于世界潮流。'
+            },
+            {
+                name: '民国',
+                period: '1912年 - 1949年',
+                startYear: 1912,
+                endYear: 1949,
+                duration: '37年',
+                founder: '孙中山(临时大总统)',
+                capital: '南京、北京、重庆等',
+                category: 'late',
+                achievements: [
+                    '推翻帝制,建立共和国',
+                    '五四运动——新文化运动',
+                    '白话文推广',
+                    '京张铁路等近代工业发展',
+                    '西南联大——教育奇迹',
+                    '抗战胜利'
+                ],
+                events: [
+                    '辛亥革命成功',
+                    '中华民国成立(1912)',
+                    '袁世凯称帝失败',
+                    '五四运动(1919)',
+                    '北伐战争',
+                    '抗日战争(1937-1945)',
+                    '新中国成立(1949)'
+                ],
+                culture: '民国时期是中国从传统社会向现代社会转型的重要阶段。这一时期思想文化空前活跃,民主科学思想传播,文学艺术革新,教育事业快速发展。抗战期间全民族团结一致,展现出坚韧的民族精神。'
+            }
+        ];
+
+        let currentZoom = 1;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let scrollLeft = 0;
+        let scrollTop = 0;
+
+        const minYear = Math.min(...dynasties.map(d => d.startYear));
+        const maxYear = Math.max(...dynasties.map(d => d.endYear));
+        const totalYears = maxYear - minYear;
+
+        function renderTimeline() {
+            const axis = document.getElementById('timeline-axis');
+            const containerWidth = 6000;
+            const dynastyCount = dynasties.length;
+            const spacing = containerWidth / (dynastyCount + 1);
+
+            dynasties.forEach((dynasty, index) => {
+                const centerPos = spacing * (index + 1);
+
+                const block = document.createElement('div');
+                block.className = `dynasty-block ${dynasty.category}`;
+                block.style.left = `${centerPos}px`;
+
+                block.innerHTML = `
+                    <div class="dynasty-name">${dynasty.name}</div>
+                    <div class="dynasty-years">${dynasty.period}</div>
+                    <div class="dynasty-duration">${dynasty.duration}</div>
+                `;
+
+                block.onclick = (e) => {
+                    e.stopPropagation();
+                    showDetail(dynasty);
+                };
+                axis.appendChild(block);
+            });
+        }
+
+        function showDetail(dynasty) {
+            const modal = document.getElementById('detail-modal');
+            const card = document.getElementById('detail-card');
+
+            card.innerHTML = `
+                <button class="close-btn" onclick="closeDetail()">✕</button>
+                
+                <div class="detail-header">
+                    <div class="detail-title">${dynasty.name}</div>
+                    <div class="detail-period">${dynasty.period}</div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-box">
+                        <div class="info-label">⏱️ 存续时间</div>
+                        <div class="info-value">${dynasty.duration}</div>
+                    </div>
+                    <div class="info-box">
+                        <div class="info-label">👑 开国君主</div>
+                        <div class="info-value">${dynasty.founder}</div>
+                    </div>
+                    <div class="info-box" style="grid-column: 1 / -1;">
+                        <div class="info-label">🏙️ 都城</div>
+                        <div class="info-value">${dynasty.capital}</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🏆 主要成就</div>
+                    <ul class="achievements-list">
+                        ${dynasty.achievements.map(a => `<li>${a}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">📜 重大历史事件</div>
+                    <ul class="events-list">
+                        ${dynasty.events.map(e => `<li>${e}</li>`).join('')}
+                    </ul>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🎨 文化特色</div>
+                    <div class="section-content">${dynasty.culture}</div>
+                </div>
+            `;
+
+            modal.classList.add('active');
+        }
+
+        function closeDetail() {
+            document.getElementById('detail-modal').classList.remove('active');
+        }
+
+        function zoomIn() {
+            currentZoom = Math.min(currentZoom + 0.2, 3);
+            updateZoom();
+        }
+
+        function zoomOut() {
+            currentZoom = Math.max(currentZoom - 0.2, 0.5);
+            updateZoom();
+        }
+
+        function resetZoom() {
+            currentZoom = 1;
+            updateZoom();
+        }
+
+        function updateZoom() {
+            const wrapper = document.getElementById('timeline-wrapper');
+            wrapper.style.transform = `scale(${currentZoom})`;
+            document.getElementById('zoom-level').textContent = `${Math.round(currentZoom * 100)}%`;
+        }
+
+        // 拖拽功能
+        const container = document.getElementById('timeline-container');
+
+        container.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.dynasty-block')) return;
+            
+            isDragging = true;
+            container.classList.add('dragging');
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            const x = e.pageX - container.offsetLeft;
+            const y = e.pageY - container.offsetTop;
+            const walkX = (x - startX) * 1.5;
+            const walkY = (y - startY) * 1.5;
+            
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        });
+
+        container.addEventListener('mouseup', () => {
+            isDragging = false;
+            container.classList.remove('dragging');
+        });
+
+        container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.classList.remove('dragging');
+        });
+
+        // 鼠标滚轮缩放
+        container.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomIn();
+            } else {
+                zoomOut();
+            }
+        });
+
+        // 点击模态框背景关闭
+        document.getElementById('detail-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'detail-modal') {
+                closeDetail();
+            }
+        });
+
+        // ESC键关闭模态框
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeDetail();
+            }
+        });
+
+        // 初始化
+        window.onload = () => {
+            renderTimeline();
+        };
+
+        // 窗口大小改变时重新渲染
+        window.addEventListener('resize', () => {
+            document.getElementById('timeline-axis').innerHTML = '';
+            renderTimeline();
+        });
+    </script>
+</body>
+</html>
