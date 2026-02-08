@@ -171,6 +171,35 @@
             letter-spacing: 1px;
         }
 
+        .view-toggle-btn {
+            background: linear-gradient(135deg, #4A7C98, #386078);
+            border: none;
+            color: #FFF;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(74, 124, 152, 0.25);
+            min-height: 44px;
+            min-width: 44px;
+            display: none; /* 默认隐藏，移动端显示 */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .view-toggle-btn:hover {
+            background: linear-gradient(135deg, #5A8CA8, #4870A8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 124, 152, 0.35);
+        }
+
+        .view-toggle-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
+
         .timeline-container {
             position: fixed;
             top: 100px;
@@ -880,6 +909,166 @@
             .copyright {
                 display: none;
             }
+
+            /* 移动端卡片视图模式 */
+            .view-toggle-btn {
+                display: inline-flex !important;
+            }
+
+            .card-view-container {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 200;
+                background: linear-gradient(180deg, #F8F5F0 0%, #F5F0E8 100%);
+                overflow: hidden;
+            }
+
+            .card-view-wrapper {
+                width: 100%;
+                height: 100%;
+                overflow-y: scroll;
+                scroll-snap-type: y mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .card-view-item {
+                width: 100%;
+                height: 100vh;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                position: relative;
+            }
+
+            .card-view-dynasty {
+                width: 90%;
+                max-width: 320px;
+                aspect-ratio: 1;
+                border-radius: 50%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 30px;
+                border: 6px solid #FFF;
+                box-shadow:
+                    0 10px 40px rgba(0, 0, 0, 0.2),
+                    0 0 0 2px rgba(200, 160, 100, 0.3);
+                text-align: center;
+                margin-bottom: 30px;
+                cursor: pointer;
+                /* 默认背景，会被具体类别覆盖 */
+                background: linear-gradient(145deg, #E86858 0%, #C84032 50%, #A83028 100%);
+            }
+
+            /* 先秦至汉朝 - 朱砂红 */
+            .card-view-dynasty.ancient {
+                background: linear-gradient(145deg, #E86858 0%, #C84032 50%, #A83028 100%);
+            }
+
+            /* 魏晋至隋唐 - 琉璃黄 */
+            .card-view-dynasty.middle {
+                background: linear-gradient(145deg, #E8C070 0%, #D4A058 50%, #B89048 100%);
+            }
+
+            /* 宋元明清 - 青花蓝 */
+            .card-view-dynasty.late {
+                background: linear-gradient(145deg, #6B9CC8 0%, #4A7C98 50%, #386078 100%);
+            }
+
+            .card-view-dynasty .dynasty-name {
+                font-size: 2em;
+                font-weight: 700;
+                color: #FFF;
+                margin-bottom: 12px;
+                letter-spacing: 4px;
+                text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+            }
+
+            .card-view-dynasty .dynasty-years {
+                font-size: 0.9em;
+                color: rgba(255, 255, 255, 0.95);
+                margin-bottom: 8px;
+                line-height: 1.4;
+            }
+
+            .card-view-dynasty .dynasty-duration {
+                font-size: 1em;
+                color: #FFF;
+                background: rgba(0, 0, 0, 0.25);
+                padding: 6px 16px;
+                border-radius: 15px;
+            }
+
+            .card-view-info {
+                width: 90%;
+                max-width: 400px;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.8);
+                border-radius: 12px;
+                border: 2px solid rgba(200, 160, 100, 0.3);
+            }
+
+            .card-view-info p {
+                color: #5D4E37;
+                line-height: 1.8;
+                font-size: 0.95em;
+                text-align: center;
+            }
+
+            .card-view-nav {
+                position: fixed;
+                bottom: 80px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                gap: 12px;
+                z-index: 210;
+            }
+
+            .card-view-nav-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: rgba(200, 160, 100, 0.3);
+                transition: all 0.3s ease;
+            }
+
+            .card-view-nav-dot.active {
+                background: #C84032;
+                transform: scale(1.3);
+            }
+
+            .card-view-close {
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                width: 44px;
+                height: 44px;
+                background: rgba(200, 64, 50, 0.9);
+                color: #FFF;
+                border: none;
+                border-radius: 50%;
+                font-size: 1.5em;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 220;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            }
+
+            .timeline-container.card-mode {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -892,6 +1081,7 @@
                 <span class="zoom-info">缩放: <span id="zoom-level">100%</span></span>
                 <button class="zoom-btn" onclick="zoomOut()">缩小</button>
                 <button class="zoom-btn" onclick="resetZoom()">重置</button>
+                <button class="view-toggle-btn" onclick="toggleCardView()" id="viewToggleBtn">📇 卡片</button>
             </div>
         </div>
     </div>
@@ -928,6 +1118,17 @@
     </div>
 
     <div class="copyright">© 2026 版权所有 | 依然 Windows 7</div>
+
+    <!-- 移动端卡片视图容器 -->
+    <div class="card-view-container" id="cardViewContainer" style="display: none;">
+        <button class="card-view-close" onclick="toggleCardView()">✕</button>
+        <div class="card-view-wrapper" id="cardViewWrapper">
+            <!-- 卡片将由JavaScript动态生成 -->
+        </div>
+        <div class="card-view-nav" id="cardViewNav">
+            <!-- 导航点将由JavaScript动态生成 -->
+        </div>
+    </div>
 
     <div class="detail-modal" id="detail-modal">
         <div class="detail-card" id="detail-card">
@@ -1547,7 +1748,90 @@
             }
         });
 
-        // 初始化
+        // 卡片视图相关变量
+        let isCardView = false;
+
+        // 切换卡片视图
+        function toggleCardView() {
+            const container = document.getElementById('cardViewContainer');
+            const timelineContainer = document.getElementById('timeline-container');
+            const btn = document.getElementById('viewToggleBtn');
+
+            isCardView = !isCardView;
+
+            if (isCardView) {
+                // 进入卡片视图
+                container.style.display = 'flex';
+                timelineContainer.classList.add('card-mode');
+                btn.textContent = '📜 时间线';
+                renderCardView();
+            } else {
+                // 返回时间线视图
+                container.style.display = 'none';
+                timelineContainer.classList.remove('card-mode');
+                btn.textContent = '📇 卡片';
+            }
+        }
+
+        // 渲染卡片视图
+        function renderCardView() {
+            const wrapper = document.getElementById('cardViewWrapper');
+            const nav = document.getElementById('cardViewNav');
+
+            wrapper.innerHTML = '';
+            nav.innerHTML = '';
+
+            dynasties.forEach((dynasty, index) => {
+                // 创建卡片项
+                const item = document.createElement('div');
+                item.className = 'card-view-item';
+
+                // 朝代圆形徽章
+                const dynastyCard = document.createElement('div');
+                dynastyCard.className = `card-view-dynasty ${dynasty.category}`;
+                dynastyCard.innerHTML = `
+                    <div class="dynasty-name">${dynasty.name}</div>
+                    <div class="dynasty-years">${dynasty.period}</div>
+                    <div class="dynasty-duration">${dynasty.duration}</div>
+                `;
+
+                // 点击徽章查看详情
+                dynastyCard.onclick = () => {
+                    showDetail(dynasty);
+                };
+
+                // 信息卡片
+                const infoCard = document.createElement('div');
+                infoCard.className = 'card-view-info';
+                infoCard.innerHTML = `<p>${dynasty.culture.substring(0, 80)}...</p>`;
+
+                item.appendChild(dynastyCard);
+                item.appendChild(infoCard);
+                wrapper.appendChild(item);
+
+                // 创建导航点
+                const dot = document.createElement('div');
+                dot.className = 'card-view-nav-dot';
+                if (index === 0) dot.classList.add('active');
+                nav.appendChild(dot);
+            });
+
+            // 监听滚动更新导航点
+            wrapper.onscroll = () => {
+                const items = wrapper.querySelectorAll('.card-view-item');
+                const dots = nav.querySelectorAll('.card-view-nav-dot');
+                const scrollTop = wrapper.scrollTop;
+
+                items.forEach((item, index) => {
+                    const itemTop = item.offsetTop - wrapper.scrollTop;
+                    if (itemTop >= -100 && itemTop < 100) {
+                        dots.forEach(d => d.classList.remove('active'));
+                        dots[index].classList.add('active');
+                    }
+                });
+            };
+        }
+
         window.onload = () => {
             renderTimeline();
         };
