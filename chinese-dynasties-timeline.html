@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>中国历代朝代时间线 - 趣味历史探险</title>
     <style>
         * {
@@ -20,6 +20,12 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
+            /* 移动端优化 */
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: pan-x pan-y;
         }
 
         /* 水墨纹理效果 */
@@ -136,6 +142,12 @@
             letter-spacing: 1px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(200, 144, 80, 0.25);
+            /* 移动端触摸区域优化 */
+            min-height: 44px;
+            min-width: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .zoom-btn:hover {
@@ -145,7 +157,7 @@
         }
 
         .zoom-btn:active {
-            transform: translateY(0);
+            transform: translateY(0) scale(0.95);
         }
 
         .zoom-info {
@@ -247,6 +259,9 @@
                 inset 0 0 30px rgba(0, 0, 0, 0.05);
             overflow: hidden;
             text-align: center;
+            /* 移动端触摸优化 */
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         /* 交替上下排列 */
@@ -267,6 +282,15 @@
                 inset 0 0 40px rgba(0, 0, 0, 0.08);
             z-index: 10;
             border-color: #FFF;
+        }
+
+        /* 移动端点击反馈 */
+        .dynasty-block:active {
+            transform: scale(1.05);
+            box-shadow:
+                0 6px 20px rgba(0, 0, 0, 0.25),
+                0 0 0 3px rgba(212, 160, 88, 0.6);
+            z-index: 10;
         }
 
         /* 先秦至汉朝 - 朱砂红 */
@@ -406,6 +430,11 @@
             background: #C84032;
             color: #FFF;
             transform: rotate(90deg);
+        }
+
+        .close-btn:active {
+            background: #A83028;
+            transform: rotate(90deg) scale(0.95);
         }
 
         .detail-header {
@@ -775,11 +804,21 @@
             .detail-card {
                 padding: 24px 20px;
                 max-height: 85vh;
+                border-radius: 6px;
+            }
+
+            .close-btn {
+                width: 44px;
+                height: 44px;
+                top: 15px;
+                right: 15px;
+                font-size: 1.3em;
             }
 
             .detail-title {
                 font-size: 1.8em;
                 letter-spacing: 4px;
+                padding-right: 40px;
             }
 
             .detail-period {
@@ -808,27 +847,38 @@
             }
 
             .legend {
-                bottom: 80px;
-                right: 15px;
-                padding: 16px;
-                font-size: 0.85em;
+                top: 105px;
+                right: 10px;
+                bottom: auto;
+                padding: 12px 16px;
+                font-size: 0.8em;
+                max-width: 140px;
+            }
+
+            .legend-item {
+                margin-bottom: 8px;
+            }
+
+            .legend-color {
+                width: 30px;
+                height: 30px;
             }
 
             .instructions {
-                bottom: 15px;
-                left: 15px;
-                right: 15px;
-                padding: 16px;
-                font-size: 0.8em;
+                bottom: 10px;
+                left: 10px;
+                right: 10px;
+                padding: 12px 16px;
+                font-size: 0.75em;
             }
 
             .instructions div {
-                margin-bottom: 6px;
+                margin-bottom: 5px;
+                line-height: 1.4;
             }
 
             .copyright {
-                font-size: 0.65em;
-                bottom: 5px;
+                display: none;
             }
         }
     </style>
@@ -1432,6 +1482,43 @@
         });
 
         container.addEventListener('mouseleave', () => {
+            isDragging = false;
+            container.classList.remove('dragging');
+        });
+
+        // 触摸事件支持（手机拖动）
+        container.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.dynasty-block')) return;
+
+            isDragging = true;
+            container.classList.add('dragging');
+            const touch = e.touches[0];
+            startX = touch.clientX - container.offsetLeft;
+            startY = touch.clientY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        }, { passive: true });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+
+            const touch = e.touches[0];
+            const x = touch.clientX - container.offsetLeft;
+            const y = touch.clientY - container.offsetTop;
+            const walkX = (x - startX) * 1.5;
+            const walkY = (y - startY) * 1.5;
+
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        }, { passive: false });
+
+        container.addEventListener('touchend', () => {
+            isDragging = false;
+            container.classList.remove('dragging');
+        });
+
+        container.addEventListener('touchcancel', () => {
             isDragging = false;
             container.classList.remove('dragging');
         });
