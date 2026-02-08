@@ -606,6 +606,46 @@
             color: #4A7C98;
         }
 
+        .emperors-container {
+            overflow-x: auto;
+            border-radius: 6px;
+            border: 1px solid rgba(200, 160, 100, 0.2);
+        }
+
+        .emperors-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .emperors-table thead {
+            background: rgba(200, 160, 100, 0.15);
+        }
+
+        .emperors-table th {
+            padding: 12px 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #8B4513;
+            border-bottom: 2px solid rgba(200, 160, 100, 0.3);
+            font-size: 0.95em;
+        }
+
+        .emperors-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(200, 160, 100, 0.15);
+            color: #5D4E37;
+            font-size: 0.9em;
+        }
+
+        .emperors-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .emperors-table tbody tr:hover {
+            background: rgba(200, 160, 100, 0.08);
+        }
+
         .legend {
             position: fixed;
             bottom: 25px;
@@ -1024,6 +1064,75 @@
                 text-align: center;
             }
 
+            /* 皇帝左右滑动区域 */
+            .card-view-emperors {
+                width: 90%;
+                max-width: 380px;
+                height: 140px;
+                overflow-x: scroll;
+                overflow-y: hidden;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                display: flex;
+                gap: 12px;
+                padding: 10px 5px;
+                background: rgba(255, 255, 255, 0.6);
+                border-radius: 12px;
+                border: 2px solid rgba(200, 160, 100, 0.25);
+                margin-top: 15px;
+            }
+
+            .emperor-card {
+                flex: 0 0 auto;
+                width: 150px;
+                height: 120px;
+                padding: 15px 12px;
+                background: linear-gradient(145deg, #FAF8F5 0%, #F5F0E8 100%);
+                border-radius: 10px;
+                border: 2px solid rgba(200, 160, 100, 0.3);
+                scroll-snap-align: start;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .emperor-card .emperor-name {
+                font-size: 0.95em;
+                font-weight: 600;
+                color: #8B4513;
+                margin-bottom: 6px;
+                line-height: 1.2;
+            }
+
+            .emperor-card .emperor-period {
+                font-size: 0.75em;
+                color: #6B5B4E;
+                margin-bottom: 4px;
+                line-height: 1.2;
+            }
+
+            .emperor-card .emperor-duration {
+                font-size: 0.8em;
+                color: #C84032;
+                font-weight: 600;
+                background: rgba(200, 64, 50, 0.1);
+                padding: 3px 10px;
+                border-radius: 10px;
+            }
+
+            .emperors-hint {
+                width: 90%;
+                max-width: 380px;
+                text-align: center;
+                color: #8B7B6E;
+                font-size: 0.75em;
+                margin-top: 8px;
+                opacity: 0.7;
+            }
+
             .card-view-nav {
                 position: fixed;
                 bottom: 80px;
@@ -1157,7 +1266,20 @@
                     '少康中兴,复兴夏朝',
                     '夏桀暴政,夏朝灭亡'
                 ],
-                culture: '夏朝是中国历史上第一个有文字记载的王朝,标志着中国进入文明时代。夏代以农业经济为主,管理制度严密,为后世奠定了基础。'
+                culture: '夏朝是中国历史上第一个有文字记载的王朝,标志着中国进入文明时代。夏代以农业经济为主,管理制度严密,为后世奠定了基础。',
+                emperors: [
+                    { name: '禹', period: '约前2070年 - 约前2065年', duration: '约5年' },
+                    { name: '启', period: '约前2065年 - 约前2050年', duration: '约15年' },
+                    { name: '太康', period: '约前2050年 - 约前2030年', duration: '约20年' },
+                    { name: '仲康', period: '约前2030年 - 约前2010年', duration: '约20年' },
+                    { name: '相', period: '约前2010年 - 约前1990年', duration: '约20年' },
+                    { name: '少康', period: '约前1980年 - 约前1950年', duration: '约30年' },
+                    { name: '槐', period: '约前1950年 - 约前1900年', duration: '约50年' },
+                    { name: '芒', period: '约前1900年 - 约前1880年', duration: '约20年' },
+                    { name: '泄', period: '约前1880年 - 约前1850年', duration: '约30年' },
+                    { name: '孔甲', period: '约前1650年 - 约前1620年', duration: '约30年' },
+                    { name: '桀', period: '约前1620年 - 约前1600年', duration: '约20年' }
+                ]
             },
             {
                 name: '商朝',
@@ -1178,7 +1300,26 @@
                     '盘庚迁殷,国力稳定',
                     '商纣王暴政,商朝灭亡'
                 ],
-                culture: '商朝创造了灿烂的青铜文化,甲骨文的发现使商朝成为中国有确切文字记载的第一个王朝。商代青铜器工艺精湛,造型优美,反映了高度发达的手工业。'
+                culture: '商朝创造了灿烂的青铜文化,甲骨文的发现使商朝成为中国有确切文字记载的第一个王朝。商代青铜器工艺精湛,造型优美,反映了高度发达的手工业。',
+                emperors: [
+                    { name: '汤', period: '约前1600年 - 约前1588年', duration: '约13年' },
+                    { name: '太丁', period: '约前1588年 - 约前1580年', duration: '约8年' },
+                    { name: '外丙', period: '约前1580年 - 约前1575年', duration: '约5年' },
+                    { name: '中壬', period: '约前1575年 - 约前1570年', duration: '约5年' },
+                    { name: '太甲', period: '约前1570年 - 约前1540年', duration: '约30年' },
+                    { name: '沃丁', period: '约前1540年 - 约前1530年', duration: '约10年' },
+                    { name: '太庚', period: '约前1530年 - 约前1500年', duration: '约30年' },
+                    { name: '小甲', period: '约前1500年 - 约前1480年', duration: '约20年' },
+                    { name: '雍己', period: '约前1480年 - 约前1465年', duration: '约15年' },
+                    { name: '太戊', period: '约前1465年 - 约前1400年', duration: '约65年' },
+                    { name: '仲丁', period: '约前1400年 - 约前1375年', duration: '约25年' },
+                    { name: '外壬', period: '约前1375年 - 约前1360年', duration: '约15年' },
+                    { name: '盘庚', period: '约前1300年 - 约前1270年', duration: '约30年' },
+                    { name: '武丁', period: '约前1250年 - 约前1192年', duration: '约58年' },
+                    { name: '祖甲', period: '约前1192年 - 约前1150年', duration: '约42年' },
+                    { name: '武乙', period: '约前1150年 - 约前1115年', duration: '约35年' },
+                    { name: '帝辛(纣)', period: '约前1075年 - 约前1046年', duration: '约29年' }
+                ]
             },
             {
                 name: '周朝',
@@ -1201,7 +1342,38 @@
                     '春秋五霸:齐桓公、晋文公、楚庄王等',
                     '战国七雄:秦、齐、楚、燕、韩、赵、魏'
                 ],
-                culture: '周朝分为西周和东周,东周又分春秋战国。春秋战国时期是中国思想文化的黄金时代,诸子百家争鸣,儒家、道家、墨家、法家等思想流派涌现,奠定了中国传统文化的基础。'
+                culture: '周朝分为西周和东周,东周又分春秋战国。春秋战国时期是中国思想文化的黄金时代,诸子百家争鸣,儒家、道家、墨家、法家等思想流派涌现,奠定了中国传统文化的基础。',
+                emperors: [
+                    { name: '姬发(周武王)', period: '约前1046年 - 约前1043年', duration: '约4年' },
+                    { name: '姬诵(周成王)', period: '约前1043年 - 约前1006年', duration: '约37年' },
+                    { name: '姬钊(周康王)', period: '约前1006年 - 约前967年', duration: '约39年' },
+                    { name: '姬瑕(周昭王)', period: '约前967年 - 约前948年', duration: '约19年' },
+                    { name: '姬满(周穆王)', period: '约前947年 - 约前903年', duration: '约44年' },
+                    { name: '姬宫湦(周厉王)', period: '约前878年 - 约前842年', duration: '约37年' },
+                    { name: '姬静(周宣王)', period: '约前828年 - 约前782年', duration: '约46年' },
+                    { name: '姬宫湦(周幽王)', period: '约前782年 - 约前771年', duration: '约11年' },
+                    { name: '姬宜臼(周平王)', period: '前770年 - 前720年', duration: '51年' },
+                    { name: '姬林(周桓王)', period: '前720年 - 前697年', duration: '23年' },
+                    { name: '姬佗(周庄王)', period: '前697年 - 前682年', duration: '15年' },
+                    { name: '姬郑(周厘王)', period: '前682年 - 前677年', duration: '5年' },
+                    { name: '姬齐(周惠王)', period: '前677年 - 前652年', duration: '25年' },
+                    { name: '姬郑(周襄王)', period: '前652年 - 前619年', duration: '33年' },
+                    { name: '姬壬臣(周顷王)', period: '前619年 - 前614年', duration: '5年' },
+                    { name: '姬班(周匡王)', period: '前613年 - 前607年', duration: '6年' },
+                    { name: '姬瑜(周定王)', period: '前607年 - 前586年', duration: '21年' },
+                    { name: '姬夷(周简王)', period: '前586年 - 前572年', duration: '14年' },
+                    { name: '姬泄心(周灵王)', period: '前572年 - 前545年', duration: '27年' },
+                    { name: '姬贵(周景王)', period: '前545年 - 前521年', duration: '24年' },
+                    { name: '姬猛(周敬王)', period: '前520年 - 前477年', duration: '43年' },
+                    { name: '姬仁(周元王)', period: '前476年 - 前469年', duration: '7年' },
+                    { name: '姬介(周贞定王)', period: '前469年 - 前442年', duration: '27年' },
+                    { name: '姬午(周考王)', period: '前441年 - 前426年', duration: '15年' },
+                    { name: '姬嬴(周威烈王)', period: '前426年 - 前402年', duration: '24年' },
+                    { name: '姬扁(周安王)', period: '前402年 - 前376年', duration: '26年' },
+                    { name: '姬定(周显王)', period: '前369年 - 前321年', duration: '48年' },
+                    { name: '姬扁(周慎靓王)', period: '前321年 - 前315年', duration: '6年' },
+                    { name: '姬延(周赧王)', period: '前315年 - 前256年', duration: '59年' }
+                ]
             },
             {
                 name: '秦朝',
@@ -1226,7 +1398,11 @@
                     '陈胜吴广起义',
                     '秦二世而亡'
                 ],
-                culture: '秦朝是中国历史上第一个大一统的中央集权国家,秦始皇创立的皇帝制度、郡县制、统一文字等措施对中国历史影响深远,奠定了两千多年封建社会的基本格局。'
+                culture: '秦朝是中国历史上第一个大一统的中央集权国家,秦始皇创立的皇帝制度、郡县制、统一文字等措施对中国历史影响深远,奠定了两千多年封建社会的基本格局。',
+                emperors: [
+                    { name: '嬴政(秦始皇)', period: '前221年 - 前210年', duration: '12年' },
+                    { name: '胡亥(秦二世)', period: '前210年 - 前207年', duration: '3年' }
+                ]
             },
             {
                 name: '汉朝',
@@ -1252,7 +1428,32 @@
                     '张骞出使西域',
                     '光武中兴(东汉刘秀)'
                 ],
-                culture: '汉朝是中国历史上最强盛的朝代之一,奠定了汉民族的基础。汉武帝时期国力达到顶峰,开辟丝绸之路,促进了中西方文化交流。汉代文化成就辉煌,《史记》、汉赋、科技发明等影响深远。'
+                culture: '汉朝是中国历史上最强盛的朝代之一,奠定了汉民族的基础。汉武帝时期国力达到顶峰,开辟丝绸之路,促进了中西方文化交流。汉代文化成就辉煌,《史记》、汉赋、科技发明等影响深远。',
+                emperors: [
+                    { name: '刘邦(汉高祖)', period: '前202年 - 前195年', duration: '8年' },
+                    { name: '刘盈(汉惠帝)', period: '前195年 - 前188年', duration: '7年' },
+                    { name: '刘恭(前少帝)', period: '前188年 - 前184年', duration: '4年' },
+                    { name: '刘恒(汉文帝)', period: '前180年 - 前157年', duration: '23年' },
+                    { name: '刘启(汉景帝)', period: '前157年 - 前141年', duration: '16年' },
+                    { name: '刘彻(汉武帝)', period: '前141年 - 前87年', duration: '54年' },
+                    { name: '刘弗陵(汉昭帝)', period: '前87年 - 前74年', duration: '13年' },
+                    { name: '刘询(汉宣帝)', period: '前74年 - 前49年', duration: '25年' },
+                    { name: '刘奭(汉元帝)', period: '前49年 - 前33年', duration: '16年' },
+                    { name: '刘骜(汉成帝)', period: '前33年 - 前7年', duration: '26年' },
+                    { name: '刘欣(汉哀帝)', period: '前7年 - 前1年', duration: '6年' },
+                    { name: '刘衎(汉平帝)', period: '前1年 - 6年', duration: '6年' },
+                    { name: '刘秀(光武帝)', period: '25年 - 57年', duration: '32年' },
+                    { name: '刘庄(汉明帝)', period: '57年 - 75年', duration: '18年' },
+                    { name: '刘炟(汉章帝)', period: '75年 - 88年', duration: '13年' },
+                    { name: '刘肇(汉和帝)', period: '88年 - 105年', duration: '17年' },
+                    { name: '刘祜(汉安帝)', period: '106年 - 125年', duration: '19年' },
+                    { name: '刘保(汉顺帝)', period: '125年 - 144年', duration: '19年' },
+                    { name: '刘炳(汉冲帝)', period: '144年 - 145年', duration: '1年' },
+                    { name: '刘缵(汉质帝)', period: '145年 - 146年', duration: '1年' },
+                    { name: '刘志(汉桓帝)', period: '146年 - 168年', duration: '22年' },
+                    { name: '刘宏(汉灵帝)', period: '168年 - 189年', duration: '21年' },
+                    { name: '刘协(汉献帝)', period: '189年 - 220年', duration: '31年' }
+                ]
             },
             {
                 name: '三国',
@@ -1373,7 +1574,31 @@
                     '安史之乱:唐朝由盛转衰',
                     '黄巢起义'
                 ],
-                culture: '唐朝是中国历史上最繁荣强盛的朝代之一,政治开明,经济发达,文化灿烂,对外交往频繁。唐诗代表了中国古典诗歌的最高成就,长安成为世界性大都市,中国文化影响力达到巅峰。'
+                culture: '唐朝是中国历史上最繁荣强盛的朝代之一,政治开明,经济发达,文化灿烂,对外交往频繁。唐诗代表了中国古典诗歌的最高成就,长安成为世界性大都市,中国文化影响力达到巅峰。',
+                emperors: [
+                    { name: '李渊(唐高祖)', period: '618年 - 626年', duration: '9年' },
+                    { name: '李世民(唐太宗)', period: '626年 - 649年', duration: '23年' },
+                    { name: '李治(唐高宗)', period: '649年 - 683年', duration: '34年' },
+                    { name: '李显(唐中宗)', period: '684年 - 690年', duration: '6年' },
+                    { name: '李旦(唐睿宗)', period: '684年 - 690年', duration: '6年' },
+                    { name: '武则天(武周)', period: '690年 - 705年', duration: '15年' },
+                    { name: '李旦(唐睿宗复辟)', period: '710年 - 712年', duration: '2年' },
+                    { name: '李隆基(唐玄宗)', period: '712年 - 756年', duration: '44年' },
+                    { name: '李亨(唐肃宗)', period: '756年 - 762年', duration: '6年' },
+                    { name: '李豫(唐代宗)', period: '762年 - 779年', duration: '17年' },
+                    { name: '李适(唐德宗)', period: '779年 - 805年', duration: '26年' },
+                    { name: '李诵(唐顺宗)', period: '805年', duration: '1年' },
+                    { name: '李纯(唐宪宗)', period: '805年 - 820年', duration: '15年' },
+                    { name: '李恒(唐穆宗)', period: '820年 - 824年', duration: '4年' },
+                    { name: '李湛(唐敬宗)', period: '824年 - 826年', duration: '2年' },
+                    { name: '李昂(唐文宗)', period: '826年 - 840年', duration: '14年' },
+                    { name: '李炎(唐武宗)', period: '840年 - 846年', duration: '6年' },
+                    { name: '李忱(唐宣宗)', period: '846年 - 859年', duration: '13年' },
+                    { name: '李漼(唐懿宗)', period: '859年 - 873年', duration: '14年' },
+                    { name: '李儇(唐僖宗)', period: '873年 - 888年', duration: '15年' },
+                    { name: '李晔(唐昭宗)', period: '888年 - 904年', duration: '16年' },
+                    { name: '李柷(唐哀帝)', period: '904年 - 907年', duration: '3年' }
+                ]
             },
             {
                 name: '五代十国',
@@ -1424,7 +1649,27 @@
                     '岳飞抗金',
                     '南宋偏安'
                 ],
-                culture: '宋朝是中国历史上经济、文化、科技最繁荣的时代之一。四大发明中的三项(活字印刷、火药、指南针)在宋代完善或广泛应用。宋词与唐诗并称,理学成为官方哲学,商业经济高度发达。'
+                culture: '宋朝是中国历史上经济、文化、科技最繁荣的时代之一。四大发明中的三项(活字印刷、火药、指南针)在宋代完善或广泛应用。宋词与唐诗并称,理学成为官方哲学,商业经济高度发达。',
+                emperors: [
+                    { name: '赵匡胤(宋太祖)', period: '960年 - 976年', duration: '17年' },
+                    { name: '赵光义(宋太宗)', period: '976年 - 997年', duration: '21年' },
+                    { name: '赵恒(宋真宗)', period: '997年 - 1022年', duration: '25年' },
+                    { name: '赵祯(宋仁宗)', period: '1022年 - 1063年', duration: '41年' },
+                    { name: '赵曙(宋英宗)', period: '1063年 - 1067年', duration: '4年' },
+                    { name: '赵顼(宋神宗)', period: '1067年 - 1085年', duration: '18年' },
+                    { name: '煦(宋哲宗)', period: '1085年 - 1100年', duration: '15年' },
+                    { name: '赵佶(宋徽宗)', period: '1100年 - 1125年', duration: '25年' },
+                    { name: '赵桓(宋钦宗)', period: '1125年 - 1127年', duration: '2年' },
+                    { name: '赵构(宋高宗)', period: '1127年 - 1162年', duration: '35年' },
+                    { name: '赵昚(宋孝宗)', period: '1162年 - 1189年', duration: '27年' },
+                    { name: '赵惇(宋光宗)', period: '1189年 - 1194年', duration: '5年' },
+                    { name: '赵扩(宋宁宗)', period: '1194年 - 1224年', duration: '30年' },
+                    { name: '赵昀(宋理宗)', period: '1224年 - 1264年', duration: '40年' },
+                    { name: '赵禥(宋度宗)', period: '1264年 - 1274年', duration: '10年' },
+                    { name: '赵显(宋恭帝)', period: '1274年 - 1276年', duration: '2年' },
+                    { name: '赵昺(宋端宗)', period: '1276年 - 1278年', duration: '2年' },
+                    { name: '赵昰(宋少帝)', period: '1278年 - 1279年', duration: '1年' }
+                ]
             },
             {
                 name: '元朝',
@@ -1449,7 +1694,19 @@
                     '元朝灭南宋,统一全国',
                     '红巾军起义'
                 ],
-                culture: '元朝是蒙古族建立的统一王朝,疆域空前辽阔,东西方文化交流频繁。元曲成为继唐诗、宋词之后的又一文学高峰。虽然统治者推行民族压迫政策,但促进了各民族融合。'
+                culture: '元朝是蒙古族建立的统一王朝,疆域空前辽阔,东西方文化交流频繁。元曲成为继唐诗、宋词之后的又一文学高峰。虽然统治者推行民族压迫政策,但促进了各民族融合。',
+                emperors: [
+                    { name: '忽必烈(元世祖)', period: '1271年 - 1294年', duration: '24年' },
+                    { name: '铁穆耳(元成宗)', period: '1294年 - 1307年', duration: '13年' },
+                    { name: '海山(元武宗)', period: '1307年 - 1311年', duration: '4年' },
+                    { name: '爱育黎拔力八达(元仁宗)', period: '1311年 - 1320年', duration: '9年' },
+                    { name: '也孙铁木儿(元英宗)', period: '1320年 - 1323年', duration: '3年' },
+                    { name: '也孙铁木儿(元泰定帝)', period: '1323年 - 1328年', duration: '5年' },
+                    { name: '图帖睦尔(元文宗)', period: '1328年 - 1329年', duration: '1年' },
+                    { name: '和世㻋(元明宗)', period: '1329年', duration: '1年' },
+                    { name: '懿璘质班(元宁宗)', period: '1332年', duration: '1年' },
+                    { name: '妥欢帖睦尔(元惠宗)', period: '1333年 - 1368年', duration: '35年' }
+                ]
             },
             {
                 name: '明朝',
@@ -1477,7 +1734,26 @@
                     '戚继光抗倭',
                     '李自成攻占北京,明朝灭亡'
                 ],
-                culture: '明朝是汉族建立的最后一个大一统王朝。明初国力强盛,郑和下西洋展示了中国强大的航海能力。明代小说、戏曲繁荣,四大名著中的三部成书于明代,科技著作丰富。'
+                culture: '明朝是汉族建立的最后一个大一统王朝。明初国力强盛,郑和下西洋展示了中国强大的航海能力。明代小说、戏曲繁荣,四大名著中的三部成书于明代,科技著作丰富。',
+                emperors: [
+                    { name: '朱元璋(明太祖)', period: '1368年 - 1398年', duration: '31年' },
+                    { name: '朱允炆(明惠帝)', period: '1398年 - 1402年', duration: '4年' },
+                    { name: '朱棣(明成祖)', period: '1402年 - 1424年', duration: '22年' },
+                    { name: '朱高炽(明仁宗)', period: '1424年 - 1425年', duration: '1年' },
+                    { name: '瞻基(明宣宗)', period: '1425年 - 1435年', duration: '10年' },
+                    { name: '朱祁镇(明英宗)', period: '1435年 - 1449年', duration: '14年' },
+                    { name: '祁钰(明代宗)', period: '1449年 - 1457年', duration: '8年' },
+                    { name: '朱祁镇(明英宗复辟)', period: '1457年 - 1464年', duration: '7年' },
+                    { name: '朱见深(明宪宗)', period: '1464年 - 1487年', duration: '23年' },
+                    { name: '祐樘(明孝宗)', period: '1487年 - 1505年', duration: '18年' },
+                    { name: '朱厚照(明武宗)', period: '1505年 - 1521年', duration: '16年' },
+                    { name: '朱厚熜(明世宗)', period: '1521年 - 1567年', duration: '46年' },
+                    { name: '朱载坖(明穆宗)', period: '1567年 - 1572年', duration: '6年' },
+                    { name: '朱翊钧(明神宗)', period: '1572年 - 1620年', duration: '48年' },
+                    { name: '朱常洛(明光宗)', period: '1620年', duration: '1年' },
+                    { name: '朱由校(明熹宗)', period: '1620年 - 1627年', duration: '7年' },
+                    { name: '朱由检(明思宗)', period: '1627年 - 1644年', duration: '17年' }
+                ]
             },
             {
                 name: '清朝',
@@ -1505,7 +1781,19 @@
                     '鸦片战争(1840):中国近代史开端',
                     '辛亥革命(1911):清朝灭亡'
                 ],
-                culture: '清朝是中国历史上最后一个封建王朝。康熙、雍正、乾隆三朝国力强盛,称为"康乾盛世",疆域辽阔,统一多民族国家得到巩固。但后期闭关锁国,导致落后于世界潮流。'
+                culture: '清朝是中国历史上最后一个封建王朝。康熙、雍正、乾隆三朝国力强盛,称为"康乾盛世",疆域辽阔,统一多民族国家得到巩固。但后期闭关锁国,导致落后于世界潮流。',
+                emperors: [
+                    { name: '福临(顺治帝)', period: '1644年 - 1661年', duration: '18年' },
+                    { name: '玄烨(康熙帝)', period: '1661年 - 1722年', duration: '61年' },
+                    { name: '胤禛(雍正帝)', period: '1722年 - 1735年', duration: '13年' },
+                    { name: '弘历(乾隆帝)', period: '1735年 - 1796年', duration: '60年' },
+                    { name: '颙琰(嘉庆帝)', period: '1796年 - 1820年', duration: '25年' },
+                    { name: '旻宁(道光帝)', period: '1820年 - 1850年', duration: '30年' },
+                    { name: '奕詝(咸丰帝)', period: '1850年 - 1861年', duration: '11年' },
+                    { name: '载淳(同治帝)', period: '1861年 - 1875年', duration: '14年' },
+                    { name: '载湉(光绪帝)', period: '1875年 - 1908年', duration: '34年' },
+                    { name: '溥仪(宣统帝)', period: '1909年 - 1912年', duration: '3年' }
+                ]
             },
             {
                 name: '民国',
@@ -1533,7 +1821,17 @@
                     '抗日战争(1937-1945)',
                     '新中国成立(1949)'
                 ],
-                culture: '民国时期是中国从传统社会向现代社会转型的重要阶段。这一时期思想文化空前活跃,民主科学思想传播,文学艺术革新,教育事业快速发展。抗战期间全民族团结一致,展现出坚韧的民族精神。'
+                culture: '民国时期是中国从传统社会向现代社会转型的重要阶段。这一时期思想文化空前活跃,民主科学思想传播,文学艺术革新,教育事业快速发展。抗战期间全民族团结一致,展现出坚韧的民族精神。',
+                emperors: [
+                    { name: '孙中山(临时大总统)', period: '1912年', duration: '3个月' },
+                    { name: '袁世凯(大总统)', period: '1912年 - 1916年', duration: '4年' },
+                    { name: '黎元洪', period: '1916年 - 1917年', duration: '1年' },
+                    { name: '冯国璋', period: '1917年 - 1918年', duration: '1年' },
+                    { name: '徐世昌', period: '1918年 - 1922年', duration: '4年' },
+                    { name: '曹锟', period: '1923年 - 1924年', duration: '1年' },
+                    { name: '蒋介石', period: '1928年 - 1948年', duration: '20年' },
+                    { name: '李宗仁(代总统)', period: '1949年', duration: '8个月' }
+                ]
             }
         ];
 
@@ -1620,6 +1918,32 @@
                     <div class="section-title">🎨 文化特色</div>
                     <div class="section-content">${dynasty.culture}</div>
                 </div>
+
+                ${dynasty.emperors && dynasty.emperors.length > 0 ? `
+                <div class="section">
+                    <div class="section-title">👑 重要君主</div>
+                    <div class="emperors-container">
+                        <table class="emperors-table">
+                            <thead>
+                                <tr>
+                                    <th>君主</th>
+                                    <th>在位时间</th>
+                                    <th>在位年限</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${dynasty.emperors.map(e => `
+                                    <tr>
+                                        <td>${e.name}</td>
+                                        <td>${e.period}</td>
+                                        <td>${e.duration}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                ` : ''}
             `;
 
             modal.classList.add('active');
@@ -1807,6 +2131,32 @@
 
                 item.appendChild(dynastyCard);
                 item.appendChild(infoCard);
+
+                // 如果有皇帝数据，添加皇帝滑动区域
+                if (dynasty.emperors && dynasty.emperors.length > 0) {
+                    const emperorsContainer = document.createElement('div');
+                    emperorsContainer.className = 'card-view-emperors';
+
+                    dynasty.emperors.forEach(emperor => {
+                        const emperorCard = document.createElement('div');
+                        emperorCard.className = 'emperor-card';
+                        emperorCard.innerHTML = `
+                            <div class="emperor-name">${emperor.name}</div>
+                            <div class="emperor-period">${emperor.period}</div>
+                            <div class="emperor-duration">${emperor.duration}</div>
+                        `;
+                        emperorsContainer.appendChild(emperorCard);
+                    });
+
+                    item.appendChild(emperorsContainer);
+
+                    // 添加滑动提示
+                    const hint = document.createElement('div');
+                    hint.className = 'emperors-hint';
+                    hint.textContent = '← 左右滑动查看更多君主 →';
+                    item.appendChild(hint);
+                }
+
                 wrapper.appendChild(item);
 
                 // 创建导航点
