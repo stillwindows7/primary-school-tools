@@ -1,38 +1,67 @@
 # primary-school-tools
 
-#### Description
-# primary-school-tools
-小学学习辅助小工具页面集合，包含各类适合小学生的轻量化学习工具（如口算练习、拼音助手、生字卡、单位换算等），页面简洁易用，适配电脑/平板/手机等设备。
+A collection of lightweight learning tools designed for primary school students. Each tool is a standalone HTML page that is simple to use and works on computers, tablets, and mobile devices.
 
+## 📖 Description
 
-#### Software Architecture
-Software architecture description
+This project provides a series of learning assistance tools suitable for primary school students. Each tool is an independent HTML page that requires no installation - just open it in a browser and start using it.
 
-#### Installation
+## 🛠️ Included Tools
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 1. Chinese Dynasties Timeline (chinese-dynasties-timeline.html)
+- **Features**: Visual timeline of Chinese dynasties from Xia Dynasty to Republic of China
+- **Highlights**:
+  - Elegant Chinese design with ink wash aesthetic
+  - Circular badge-style dynasty display with smooth interactions
+  - Click to view dynasty details (achievements, events, cultural features)
+  - Supports drag-to-browse and scroll-to-zoom
+  - 18 historical periods evenly spaced
+- **Color Categories**:
+  - Cinnabar Red: Pre-Qin to Han Dynasty
+  - Glazed Yellow: Wei-Jin to Sui-Tang Dynasty
+  - Blue & White: Song-Yuan-Ming-Qing (including Republic)
 
-#### Instructions
+### 2. Chinese Stroke Buddy (ChineseStrokeBuddy.html)
+- Chinese character stroke learning tool
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## 🚀 Usage
 
-#### Contribution
+1. Download the desired HTML tool file
+2. Double-click to open in your browser
+3. Follow the on-screen instructions
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+## 💻 System Requirements
 
+- Any modern browser (Chrome, Firefox, Edge, etc.)
+- Supports Windows 7 and above
+- Works on computers, tablets, and mobile devices
 
-#### Gitee Feature
+## 📝 Development Roadmap
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- [ ] Mental Math Practice Tool
+- [ ] Pinyin Learning Assistant
+- [ ] Character Flashcards
+- [ ] Unit Converter
+- [ ] More learning tools...
+
+## 🤝 Contributing
+
+Contributions and suggestions are welcome!
+
+1. Fork this repository
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License
+
+## 👨‍💻 Author
+
+primary-school-tools
+
+---
+
+© 2026 All Rights Reserved | Still Windows 7

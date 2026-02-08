@@ -1,39 +1,67 @@
 # primary-school-tools
 
-#### 介绍
-# primary-school-tools
-小学学习辅助小工具页面集合，包含各类适合小学生的轻量化学习工具（如口算练习、拼音助手、生字卡、单位换算等），页面简洁易用，适配电脑/平板/手机等设备。
+小学学习辅助小工具页面集合，包含各类适合小学生的轻量化学习工具，页面简洁易用，适配电脑/平板/手机等设备。
 
+## 📖 项目介绍
 
-#### 软件架构
-软件架构说明
+本项目提供了一系列适合小学生使用的学习辅助工具，每个工具都是独立的 HTML 页面，无需安装，直接在浏览器中打开即可使用。
 
+## 🛠️ 包含工具
 
-#### 安装教程
+### 1. 中国历代朝代时间线 (chinese-dynasties-timeline.html)
+- **功能**：可视化展示中国从夏朝到民国的历史朝代
+- **特点**：
+  - 典雅中国风设计，水墨韵味
+  - 圆形徽章式朝代展示，交互流畅
+  - 点击查看朝代详情（成就、事件、文化特色）
+  - 支持拖拽浏览、滚轮缩放
+  - 18个历史时期等间距排列
+- **配色分类**：
+  - 朱砂红：先秦至汉朝
+  - 琉璃黄：魏晋至隋唐
+  - 青花蓝：宋元明清（含民国）
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+### 2. 中文字笔划助手 (ChineseStrokeBuddy.html)
+- 汉字笔划学习工具
 
-#### 使用说明
+## 🚀 使用方法
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1. 下载所需工具的 HTML 文件
+2. 双击文件在浏览器中打开
+3. 根据页面提示进行操作
 
-#### 参与贡献
+## 💻 系统要求
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+- 任何现代浏览器（Chrome、Firefox、Edge 等）
+- 支持 Windows 7 及以上系统
+- 支持电脑、平板、手机等设备
 
+## 📝 开发计划
 
-#### 特技
+- [ ] 口算练习工具
+- [ ] 拼音学习助手
+- [ ] 生字卡片
+- [ ] 单位换算器
+- [ ] 更多学习工具...
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+## 🤝 参与贡献
+
+欢迎贡献代码和建议！
+
+1. Fork 本仓库
+2. 新建特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交代码 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 新建 Pull Request
+
+## 📄 许可证
+
+本项目采用 MIT 许可证
+
+## 👨‍💻 作者
+
+primary-school-tools
+
+---
+
+© 2026 版权所有 | 依然 Windows 7
