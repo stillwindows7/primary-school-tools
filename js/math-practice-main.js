@@ -67,7 +67,7 @@ function setupEventListeners() {
 
 /**
  * 切换视图
- * @param {string} viewName - 视图名称 ('home', 'practice', 'result', 'level', 'profile')
+ * @param {string} viewName - 视图名称
  */
 function showView(viewName) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -88,25 +88,25 @@ function goHome() {
 
 /**
  * 选择年级
- * @param {string} grade - 年级ID ('grade1', 'grade2', 'grade3')
+ * @param {string} grade - 年级ID
  */
 function selectGrade(grade) {
     const state = window.MathPractice.state;
     state.grade = grade;
     document.querySelectorAll('.grade-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`[data-grade="${grade}"]`).classList.add('selected');
+    document.querySelector('[data-grade="' + grade + '"]').classList.add('selected');
     window.MathPractice.updateUserInfo();
 }
 
 /**
  * 选择模式
- * @param {string} mode - 模式ID ('practice', 'level')
+ * @param {string} mode - 模式ID
  */
 function selectMode(mode) {
     const state = window.MathPractice.state;
     state.mode = mode;
     document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
-    document.querySelector(`[data-mode="${mode}"]`).classList.add('selected');
+    document.querySelector('[data-mode="' + mode + '"]').classList.add('selected');
 
     // 显示/隐藏选项
     document.getElementById('timedOptions').classList.remove('active');
@@ -120,24 +120,22 @@ function selectMode(mode) {
 
 /**
  * 选择难度
- * @param {string} difficulty - 难度ID ('easy', 'medium', 'hard')
+ * @param {string} difficulty - 难度ID
  */
 function selectDifficulty(difficulty) {
     const state = window.MathPractice.state;
     state.difficulty = difficulty;
     document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
-    document.querySelector(`.diff-btn.${difficulty}`).classList.add('selected');
+    document.querySelector('.diff-btn.' + difficulty).classList.add('selected');
 }
 
 /**
  * 选择限时选项
- * @param {number} value - 限时秒数
  */
 function selectTimedOption(value) {
     const state = window.MathPractice.state;
     state.timedOption = value;
     document.querySelectorAll('#timedBtns .option-btn').forEach(b => b.classList.remove('selected'));
-    // 使用全局事件对象中的 target
     if (window.event && window.event.target) {
         window.event.target.classList.add('selected');
     }
@@ -145,13 +143,11 @@ function selectTimedOption(value) {
 
 /**
  * 选择定量选项
- * @param {number} value - 题目数量
  */
 function selectCountOption(value) {
     const state = window.MathPractice.state;
     state.countOption = value;
     document.querySelectorAll('#countBtns .option-btn').forEach(b => b.classList.remove('selected'));
-    // 使用全局事件对象中的 target
     if (window.event && window.event.target) {
         window.event.target.classList.add('selected');
     }

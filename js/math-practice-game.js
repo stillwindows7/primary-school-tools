@@ -141,6 +141,13 @@ function nextQuestion() {
     document.getElementById('answerInput').classList.remove('correct', 'wrong');
     document.getElementById('encouragement').textContent = '';
     document.getElementById('progressText').textContent = `第 ${state.questionCount + 1} 题`;
+
+    // 自动朗读题目
+    if (state.autoReadQuestion) {
+        setTimeout(() => {
+            window.MathPractice.speakQuestion();
+        }, 500);
+    }
 }
 
 /**
