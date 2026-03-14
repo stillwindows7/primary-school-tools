@@ -14,49 +14,70 @@
 
         body {
             font-family: 'Microsoft YaHei', 'SimHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f9f4e8;
+            background-image:
+                linear-gradient(rgba(200, 190, 170, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(200, 190, 170, 0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+
+        /* 纸张纹理效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" /></filter><rect width="100%" height="100%" filter="url(%23noise)" opacity="0.03"/></svg>');
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         /* 标题样式 */
         .header {
             text-align: center;
             padding: 30px 20px;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 30px;
+            background: #fffbf0;
+            border-radius: 8px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 2px 2px 0 rgba(180, 170, 150, 0.3);
+            border: 2px solid #e0d8c8;
         }
 
         .header h1 {
             font-size: 2.5em;
-            color: #ff6b6b;
-            text-shadow: 3px 3px 0 #ffd93d;
+            color: #8b4513;
             margin-bottom: 10px;
         }
 
         .header p {
             font-size: 1.2em;
-            color: #6c5ce7;
+            color: #a0826d;
         }
 
         /* 输入区域 */
         .input-section {
-            background: rgba(255, 255, 255, 0.95);
+            background: #fffbf0;
             padding: 30px;
-            border-radius: 25px;
+            border-radius: 8px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 2px 2px 0 rgba(180, 170, 150, 0.3);
+            border: 2px solid #e0d8c8;
         }
 
         .input-section h2 {
-            color: #6c5ce7;
+            color: #8b4513;
             margin-bottom: 20px;
             font-size: 1.5em;
             text-align: center;
@@ -74,85 +95,134 @@
             max-width: 400px;
             padding: 18px 25px;
             font-size: 1.5em;
-            border: 4px solid #a29bfe;
-            border-radius: 20px;
+            border: 3px solid #d4c8b8;
+            border-radius: 8px;
             outline: none;
             text-align: center;
             letter-spacing: 10px;
-            transition: all 0.3s;
+            transition: all 0.2s;
             min-height: 120px;
             resize: vertical;
             line-height: 1.8;
+            background: #ffffff;
         }
 
         #charInput:focus {
-            border-color: #6c5ce7;
-            box-shadow: 0 0 20px rgba(108, 92, 231, 0.3);
+            border-color: #b8a888;
+            box-shadow: 0 0 0 3px rgba(180, 170, 150, 0.1);
         }
 
         .btn {
             padding: 18px 40px;
             font-size: 1.2em;
             border: none;
-            border-radius: 20px;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             font-weight: bold;
+            position: relative;
+            /* 手绘边框效果 */
+            box-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.1),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 按钮内边框 - 模拟蜡笔手绘 */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 250px 12px 220px 12px / 12px 220px 12px 250px;
+            pointer-events: none;
+        }
+
+        /* 蜡笔纹理 */
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="crayon"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" /></filter><rect width="100%" height="100%" filter="url(%23crayon)" opacity="0.15"/></svg>');
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0.5;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
+            background: #5cb85c;
             color: white;
-            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(255, 107, 107, 0.5);
+            transform: rotate(-1deg) scale(1.02);
+            background: #4cae4c;
+        }
+
+        .btn-primary:active {
+            transform: rotate(1deg) scale(0.98);
         }
 
         .btn-clear {
-            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
-            color: white;
-            box-shadow: 0 5px 20px rgba(108, 92, 231, 0.4);
+            background: #d0d0d0;
+            color: #555;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
         }
 
         .btn-clear:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(108, 92, 231, 0.5);
+            transform: rotate(1deg) scale(1.02);
+            background: #c0c0c0;
+        }
+
+        .btn-clear:active {
+            transform: rotate(-1deg) scale(0.98);
         }
 
         .btn-batch {
-            background: linear-gradient(135deg, #00b894, #00cec9);
+            background: #f0ad4e;
             color: white;
-            box-shadow: 0 5px 20px rgba(0, 184, 148, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .btn-batch:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.5);
+            transform: rotate(-0.5deg) scale(1.02);
+            background: #ec971f;
+        }
+
+        .btn-batch:active {
+            transform: rotate(0.5deg) scale(0.98);
         }
 
         .btn-batch-all {
-            background: linear-gradient(135deg, #e17055, #d63031);
+            background: #5bc0de;
             color: white;
-            box-shadow: 0 5px 20px rgba(214, 48, 49, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .btn-batch-all:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(214, 48, 49, 0.5);
+            transform: rotate(0.5deg) scale(1.02);
+            background: #31b0d5;
+        }
+
+        .btn-batch-all:active {
+            transform: rotate(-0.5deg) scale(0.98);
         }
 
         .char-count {
             text-align: center;
             margin-top: 15px;
-            color: #6c5ce7;
+            color: #a0826d;
             font-size: 1.1em;
         }
 
         .char-count span {
-            color: #ff6b6b;
+            color: #8b4513;
             font-weight: bold;
             font-size: 1.3em;
         }
@@ -171,15 +241,17 @@
         }
 
         .character-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 25px;
+            background: #fffbf0;
+            border-radius: 8px;
             padding: 25px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
+            box-shadow: 2px 2px 0 rgba(180, 170, 150, 0.3);
+            transition: transform 0.2s;
+            border: 2px solid #e0d8c8;
         }
 
         .character-card:hover {
-            transform: translateY(-5px);
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0 rgba(180, 170, 150, 0.3);
         }
 
         .card-header {
@@ -193,7 +265,7 @@
 
         .card-header h3 {
             font-size: 3em;
-            color: #ff6b6b;
+            color: #8b4513;
             margin-bottom: 15px;
         }
 
@@ -207,34 +279,71 @@
         .btn-sm {
             padding: 10px 15px;
             font-size: 1.3em;
-            border-radius: 12px;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
             border: none;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             font-weight: bold;
             min-width: 45px;
+            position: relative;
+            box-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.1),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-sm::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 250px 12px 220px 12px / 12px 220px 12px 250px;
+            pointer-events: none;
+        }
+
+        .btn-sm::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="crayon2"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" /></filter><rect width="100%" height="100%" filter="url(%23crayon2)" opacity="0.15"/></svg>');
+            border-radius: inherit;
+            pointer-events: none;
+            opacity: 0.5;
         }
 
         .btn-animate {
-            background: linear-gradient(135deg, #00b894, #00cec9);
+            background: #5cb85c;
             color: white;
-            box-shadow: 0 4px 15px rgba(0, 184, 148, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .btn-animate:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(0, 184, 148, 0.5);
+            transform: rotate(-2deg) scale(1.05);
+            background: #4cae4c;
+        }
+
+        .btn-animate:active {
+            transform: rotate(2deg) scale(0.95);
         }
 
         .btn-speak {
-            background: linear-gradient(135deg, #fdcb6e, #f39c12);
+            background: #f0ad4e;
             color: white;
-            box-shadow: 0 4px 15px rgba(253, 203, 110, 0.4);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
         .btn-speak:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(253, 203, 110, 0.5);
+            transform: rotate(2deg) scale(1.05);
+            background: #ec971f;
+        }
+
+        .btn-speak:active {
+            transform: rotate(-2deg) scale(0.95);
         }
 
         /* 田字格样式 */
@@ -253,8 +362,8 @@
             width: 100%;
             height: 100%;
             background: #fff;
-            border: 4px solid #ff6b6b;
-            border-radius: 10px;
+            border: 3px solid #d4a574;
+            border-radius: 4px;
             z-index: 1;
         }
 
@@ -272,7 +381,7 @@
             height: 2px;
             top: 50%;
             left: 0;
-            border-top: 2px dashed #ff6b6b;
+            border-top: 2px dashed #d4a574;
             border-bottom: none;
         }
 
@@ -281,7 +390,7 @@
             height: 100%;
             left: 50%;
             top: 0;
-            border-left: 2px dashed #ff6b6b;
+            border-left: 2px dashed #d4a574;
             border-right: none;
         }
 
@@ -312,13 +421,14 @@
             top: -30px;
             left: 50%;
             transform: translateX(-50%);
-            background: #00b894;
+            background: #5a9f3c;
             color: white;
             padding: 5px 15px;
-            border-radius: 20px;
+            border-radius: 4px;
             font-size: 0.9em;
             animation: pulse 1s infinite;
             white-space: nowrap;
+            border: 2px solid #4a8a2c;
         }
 
         @keyframes pulse {
@@ -446,9 +556,8 @@
                     id="charInput"
                     placeholder="输入要学习的汉字"
                 ></textarea>
-                <button class="btn btn-primary" id="loadBtn">🚀 开始学习</button>
-                <button class="btn btn-batch" id="batchBtn">🎬 批量播放</button>
-                <button class="btn btn-batch-all" id="batchAllBtn">⏯️ 全部一起播放</button>
+                <button class="btn btn-batch" id="batchBtn">🎬 顺序播放</button>
+                <button class="btn btn-batch-all" id="batchAllBtn">⏯️ 全部播放</button>
                 <button class="btn btn-clear" id="clearBtn">🗑️ 清空</button>
             </div>
             <div class="char-count">
@@ -901,28 +1010,20 @@
             }
 
             // 绑定按钮事件
-            const loadBtn = document.getElementById('loadBtn');
             const clearBtn = document.getElementById('clearBtn');
             const batchBtn = document.getElementById('batchBtn');
             const batchAllBtn = document.getElementById('batchAllBtn');
 
-            if (loadBtn) {
-                loadBtn.addEventListener('click', function() {
-                    console.log('开始学习按钮被点击');
-                    loadCharacters();
-                });
-            }
-
             if (batchBtn) {
                 batchBtn.addEventListener('click', function() {
-                    console.log('批量播放按钮被点击');
+                    console.log('顺序播放按钮被点击');
                     batchAnimate();
                 });
             }
 
             if (batchAllBtn) {
                 batchAllBtn.addEventListener('click', function() {
-                    console.log('全部一起播放按钮被点击');
+                    console.log('全部播放按钮被点击');
                     batchAnimateTogether();
                 });
             }
@@ -935,7 +1036,6 @@
             }
 
             console.log('所有事件监听器已绑定');
-            console.log('loadCharacters 函数存在:', typeof window.loadCharacters);
         });
     </script>
 </body>
