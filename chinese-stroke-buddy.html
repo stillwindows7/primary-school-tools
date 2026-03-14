@@ -736,39 +736,8 @@
             // 添加动画中的标记
             tianzigeContainer.classList.add('animating');
 
-            // 重新创建 writer 确保从空白开始
-            const char = document.getElementById('charInput').value[index];
-
-            // 根据屏幕宽度动态设置大小
-            const screenWidth = window.innerWidth;
-            let svgWidth = 220;
-            let svgHeight = 220;
-            let padding = 2;  // 减小 padding 让汉字更大
-
-            if (screenWidth <= 375) {
-                svgWidth = 130;
-                svgHeight = 130;
-                padding = 1;
-            } else if (screenWidth <= 768) {
-                svgWidth = 150;
-                svgHeight = 150;
-                padding = 1;
-            }
-
-            writers[index] = HanziWriter.create('character-target-' + index, char, {
-                width: svgWidth,
-                height: svgHeight,
-                padding: padding,
-                showOutline: true,
-                strokeAnimationSpeed: 1,
-                delayBetweenStrokes: 300,
-                strokeColor: '#2d3436',
-                radicalColor: '#ff6b6b',
-                outlineColor: '#dfe6e9',
-                showCharacter: false
-            });
-
-            writers[index].animateCharacter({
+            // 直接使用现有实例播放动画，避免重复创建
+            writer.animateCharacter({
                 onComplete: function() {
                     tianzigeContainer.classList.remove('animating');
                 }
@@ -824,39 +793,8 @@
                     // 添加动画中的标记
                     tianzigeContainer.classList.add('animating');
 
-                    // 重新创建 writer 确保从空白开始
-                    const char = characters[i];
-
-                    // 根据屏幕宽度动态设置大小
-                    const screenWidth = window.innerWidth;
-                    let svgWidth = 220;
-                    let svgHeight = 220;
-                    let padding = 2;
-
-                    if (screenWidth <= 375) {
-                        svgWidth = 130;
-                        svgHeight = 130;
-                        padding = 1;
-                    } else if (screenWidth <= 768) {
-                        svgWidth = 150;
-                        svgHeight = 150;
-                        padding = 1;
-                    }
-
-                    writers[i] = HanziWriter.create('character-target-' + i, char, {
-                        width: svgWidth,
-                        height: svgHeight,
-                        padding: padding,
-                        showOutline: true,
-                        strokeAnimationSpeed: 1,
-                        delayBetweenStrokes: 300,
-                        strokeColor: '#2d3436',
-                        radicalColor: '#ff6b6b',
-                        outlineColor: '#dfe6e9',
-                        showCharacter: false
-                    });
-
-                    writers[i].animateCharacter({
+                    // 直接使用现有实例播放动画，避免重复创建
+                    writer.animateCharacter({
                         onComplete: function() {
                             tianzigeContainer.classList.remove('animating');
                             resolve();
@@ -868,7 +806,7 @@
                 await new Promise(r => setTimeout(r, 300));
             }
 
-            showError('🎉 批量播放完成！');
+            showError('🎉 顺序播放完成！');
         };
 
         window.batchAnimateTogether = async function() {
@@ -942,20 +880,7 @@
                             // 添加动画中的标记
                             tianzigeContainer.classList.add('animating');
 
-                            // 重新创建 writer 确保从空白开始
-                            writers[index] = HanziWriter.create('character-target-' + index, char, {
-                                width: svgWidth,
-                                height: svgHeight,
-                                padding: padding,
-                                showOutline: true,
-                                strokeAnimationSpeed: 1,
-                                delayBetweenStrokes: 300,
-                                strokeColor: '#2d3436',
-                                radicalColor: '#ff6b6b',
-                                outlineColor: '#dfe6e9',
-                                showCharacter: false
-                            });
-
+                            // 直接使用现有实例播放动画，避免重复创建
                             writers[index].animateCharacter({
                                 onComplete: function() {
                                     if (isLoopPlaying) {
@@ -977,7 +902,7 @@
                 }
 
                 // 循环结束，恢复按钮文字
-                batchAllBtn.textContent = '⏯️ 全部一起播放';
+                batchAllBtn.textContent = '⏯️ 全部播放';
             };
 
             // 开始循环
