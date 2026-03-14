@@ -80,6 +80,9 @@
             text-align: center;
             letter-spacing: 10px;
             transition: all 0.3s;
+            min-height: 120px;
+            resize: vertical;
+            line-height: 1.8;
         }
 
         #charInput:focus {
@@ -117,6 +120,17 @@
         .btn-clear:hover {
             transform: translateY(-3px);
             box-shadow: 0 8px 30px rgba(108, 92, 231, 0.5);
+        }
+
+        .btn-batch {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 184, 148, 0.4);
+        }
+
+        .btn-batch:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 184, 148, 0.5);
         }
 
         .char-count {
@@ -339,6 +353,7 @@
                 font-size: 1.2em;
                 padding: 12px 15px;
                 letter-spacing: 5px;
+                min-height: 100px;
             }
 
             .btn {
@@ -416,12 +431,12 @@
         <div class="input-section">
             <h2>🔤 输入你要学习的汉字</h2>
             <div class="input-box">
-                <input
-                    type="text"
+                <textarea
                     id="charInput"
                     placeholder="输入要学习的汉字"
-                >
+                ></textarea>
                 <button class="btn btn-primary" id="loadBtn">🚀 开始学习</button>
+                <button class="btn btn-batch" id="batchBtn">🎬 批量播放</button>
                 <button class="btn btn-clear" id="clearBtn">🗑️ 清空</button>
             </div>
             <div class="char-count">
@@ -646,6 +661,86 @@
             }
         };
 
+        window.batchAnimate = async function() {
+            const input = document.getElementById('charInput').value.trim();
+
+            if (!input) {
+                showError('⚠️ 请先输入要学习的汉字！');
+                return;
+            }
+
+            // 获取所有汉字
+            const characters = input.split('');
+
+            // 如果还没有加载汉字，先加载
+            if (Object.keys(writers).length === 0 || Object.keys(writers).length !== characters.length) {
+                await loadCharacters();
+                // 等待一下确保所有 writer 都创建完成
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+
+            // 依次播放每个汉字的动画
+            for (let i = 0; i < characters.length; i++) {
+                await new Promise(function(resolve) {
+                    const writer = writers[i];
+                    const tianzigeContainer = document.getElementById('tianzige-' + i);
+
+                    if (!writer) {
+                        console.error('Writer not found for index:', i);
+                        resolve();
+                        return;
+                    }
+
+                    // 添加动画中的标记
+                    tianzigeContainer.classList.add('animating');
+
+                    // 重新创建 writer 确保从空白开始
+                    const char = characters[i];
+
+                    // 根据屏幕宽度动态设置大小
+                    const screenWidth = window.innerWidth;
+                    let svgWidth = 220;
+                    let svgHeight = 220;
+                    let padding = 2;
+
+                    if (screenWidth <= 375) {
+                        svgWidth = 130;
+                        svgHeight = 130;
+                        padding = 1;
+                    } else if (screenWidth <= 768) {
+                        svgWidth = 150;
+                        svgHeight = 150;
+                        padding = 1;
+                    }
+
+                    writers[i] = HanziWriter.create('character-target-' + i, char, {
+                        width: svgWidth,
+                        height: svgHeight,
+                        padding: padding,
+                        showOutline: true,
+                        strokeAnimationSpeed: 1,
+                        delayBetweenStrokes: 300,
+                        strokeColor: '#2d3436',
+                        radicalColor: '#ff6b6b',
+                        outlineColor: '#dfe6e9',
+                        showCharacter: false
+                    });
+
+                    writers[i].animateCharacter({
+                        onComplete: function() {
+                            tianzigeContainer.classList.remove('animating');
+                            resolve();
+                        }
+                    });
+                });
+
+                // 每个汉字之间稍微停顿一下
+                await new Promise(r => setTimeout(r, 300));
+            }
+
+            showError('🎉 批量播放完成！');
+        };
+
         // DOM 加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             console.log('页面加载完成，初始化事件监听器');
@@ -674,11 +769,19 @@
             // 绑定按钮事件
             const loadBtn = document.getElementById('loadBtn');
             const clearBtn = document.getElementById('clearBtn');
+            const batchBtn = document.getElementById('batchBtn');
 
             if (loadBtn) {
                 loadBtn.addEventListener('click', function() {
                     console.log('开始学习按钮被点击');
                     loadCharacters();
+                });
+            }
+
+            if (batchBtn) {
+                batchBtn.addEventListener('click', function() {
+                    console.log('批量播放按钮被点击');
+                    batchAnimate();
                 });
             }
 
