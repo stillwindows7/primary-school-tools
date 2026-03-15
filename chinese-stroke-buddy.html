@@ -593,6 +593,9 @@
         // 循环播放控制标志
         let isLoopPlaying = false;
 
+        // 顺序播放控制标志
+        let isBatchPlaying = false;
+
         // 所有函数定义 - 全局作用域
         window.clearAll = function() {
             document.getElementById('charInput').value = '';
@@ -600,11 +603,12 @@
             document.getElementById('displaySection').style.display = 'none';
             document.getElementById('characterGrid').innerHTML = '';
             document.getElementById('errorMessage').style.display = 'none';
-            // 停止循环播放
+            // 停止所有播放
             isLoopPlaying = false;
+            isBatchPlaying = false;
             const batchAllBtn = document.getElementById('batchAllBtn');
             if (batchAllBtn) {
-                batchAllBtn.textContent = '⏯️ 全部一起播放';
+                batchAllBtn.textContent = '⏯️ 全部播放';
             }
             // 清空 writers
             for (let key in writers) {
@@ -780,6 +784,21 @@
                 return;
             }
 
+            // 如果正在播放，先停止
+            if (isBatchPlaying || isLoopPlaying) {
+                isBatchPlaying = false;
+                isLoopPlaying = false;
+                const batchAllBtn = document.getElementById('batchAllBtn');
+                if (batchAllBtn) {
+                    batchAllBtn.textContent = '⏯️ 全部播放';
+                }
+                // 等待一下让当前播放停止
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+
+            // 设置播放状态
+            isBatchPlaying = true;
+
             // 获取所有汉字
             const characters = input.split('');
 
@@ -792,6 +811,11 @@
 
             // 依次播放每个汉字的动画
             for (let i = 0; i < characters.length; i++) {
+                // 检查是否被中断
+                if (!isBatchPlaying) {
+                    return;
+                }
+
                 await new Promise(function(resolve) {
                     const writer = writers[i];
                     const tianzigeContainer = document.getElementById('tianzige-' + i);
@@ -818,6 +842,8 @@
                 await new Promise(r => setTimeout(r, 300));
             }
 
+            // 播放完成
+            isBatchPlaying = false;
             showError('🎉 顺序播放完成！');
         };
 
@@ -827,6 +853,12 @@
             if (!input) {
                 showError('⚠️ 请先输入要学习的汉字！');
                 return;
+            }
+
+            // 如果正在顺序播放，先停止
+            if (isBatchPlaying) {
+                isBatchPlaying = false;
+                await new Promise(resolve => setTimeout(resolve, 100));
             }
 
             // 切换循环播放状态
@@ -839,7 +871,7 @@
                 batchAllBtn.textContent = '⏸️ 停止循环';
                 showError('🔄 开始循环播放');
             } else {
-                batchAllBtn.textContent = '⏯️ 全部一起播放';
+                batchAllBtn.textContent = '⏯️ 全部播放';
                 showError('⏹️ 已停止循环播放');
                 return;
             }
