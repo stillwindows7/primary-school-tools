@@ -817,20 +817,84 @@
         // 顺序播放控制标志
         let isBatchPlaying = false;
 
+        // 动画锁 - 防止快速点击导致的冲突
+        let animationLock = false;
+
+        // 停止所有动画的函数
+        window.stopAllAnimations = async function() {
+            if (animationLock) {
+                // 如果已经有锁，等待解锁
+                while (animationLock) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                }
+            }
+
+            // 设置锁
+            animationLock = true;
+
+            // 停止所有播放状态
+            isBatchPlaying = false;
+            isLoopPlaying = false;
+
+            // 取消所有正在进行的 HanziWriter 动画
+            for (let key in writers) {
+                if (writers[key] && writers[key].cancelAnimation) {
+                    try {
+                        writers[key].cancelAnimation();
+                    } catch (e) {
+                        // 忽略错误
+                    }
+                }
+            }
+
+            // 移除所有动画中的标记
+            const allContainers = document.querySelectorAll('[id^="tianzige-"]');
+            allContainers.forEach(container => {
+                container.classList.remove('animating');
+            });
+
+            // 重置按钮文字
+            const batchAllBtn = document.getElementById('batchAllBtn');
+            if (batchAllBtn) {
+                batchAllBtn.textContent = '⏯️ 全部播放';
+            }
+
+            // 等待一下确保所有动画都已停止
+            await new Promise(resolve => setTimeout(resolve, 200));
+
+            // 释放锁
+            animationLock = false;
+        };
+
         // 所有函数定义 - 全局作用域
-        window.clearAll = function() {
+        window.clearAll = async function() {
+            // 停止所有动画
+            isLoopPlaying = false;
+            isBatchPlaying = false;
+            animationLock = false;
+
+            // 取消所有动画
+            for (let key in writers) {
+                if (writers[key] && writers[key].cancelAnimation) {
+                    try {
+                        writers[key].cancelAnimation();
+                    } catch (e) {
+                        // 忽略错误
+                    }
+                }
+            }
+
             document.getElementById('charInput').value = '';
             document.getElementById('charCount').textContent = '0';
             document.getElementById('displaySection').style.display = 'none';
             document.getElementById('characterGrid').innerHTML = '';
             document.getElementById('errorMessage').style.display = 'none';
-            // 停止所有播放
-            isLoopPlaying = false;
-            isBatchPlaying = false;
+
             const batchAllBtn = document.getElementById('batchAllBtn');
             if (batchAllBtn) {
                 batchAllBtn.textContent = '⏯️ 全部播放';
             }
+
             // 清空 writers
             for (let key in writers) {
                 delete writers[key];
@@ -1005,16 +1069,15 @@
                 return;
             }
 
-            // 如果正在播放，先停止
+            // 检查锁状态，防止重复点击
+            if (animationLock) {
+                showError('⏳ 请等待当前动画停止...');
+                return;
+            }
+
+            // 如果正在播放，先停止所有动画
             if (isBatchPlaying || isLoopPlaying) {
-                isBatchPlaying = false;
-                isLoopPlaying = false;
-                const batchAllBtn = document.getElementById('batchAllBtn');
-                if (batchAllBtn) {
-                    batchAllBtn.textContent = '⏯️ 全部播放';
-                }
-                // 等待一下让当前播放停止
-                await new Promise(resolve => setTimeout(resolve, 100));
+                await stopAllAnimations();
             }
 
             // 设置播放状态
@@ -1076,26 +1139,31 @@
                 return;
             }
 
-            // 如果正在顺序播放，先停止
-            if (isBatchPlaying) {
-                isBatchPlaying = false;
-                await new Promise(resolve => setTimeout(resolve, 100));
+            // 检查锁状态，防止重复点击
+            if (animationLock) {
+                showError('⏳ 请等待当前动画停止...');
+                return;
             }
 
-            // 切换循环播放状态
-            isLoopPlaying = !isLoopPlaying;
-
-            // 更新按钮文字
-            const batchAllBtn = document.getElementById('batchAllBtn');
-
+            // 如果正在循环播放，停止并退出
             if (isLoopPlaying) {
-                batchAllBtn.textContent = '⏸️ 停止循环';
-                showError('🔄 开始循环播放');
-            } else {
-                batchAllBtn.textContent = '⏯️ 全部播放';
+                await stopAllAnimations();
                 showError('⏹️ 已停止循环播放');
                 return;
             }
+
+            // 如果正在顺序播放，先停止
+            if (isBatchPlaying) {
+                await stopAllAnimations();
+            }
+
+            // 设置循环播放状态
+            isLoopPlaying = true;
+
+            // 更新按钮文字
+            const batchAllBtn = document.getElementById('batchAllBtn');
+            batchAllBtn.textContent = '⏸️ 停止循环';
+            showError('🔄 开始循环播放');
 
             // 获取所有汉字
             const characters = input.split('');
