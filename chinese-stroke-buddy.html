@@ -60,24 +60,20 @@
         }
 
         /* 标题样式 */
-        .header {
+        .section-title {
             text-align: center;
-            padding: 30px 20px;
-            background: #fffbf0;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 2px 2px 0 rgba(180, 170, 150, 0.3);
-            border: 2px solid #e0d8c8;
+            padding: 15px 20px;
+            margin-bottom: 15px;
         }
 
-        .header h1 {
-            font-size: 2.5em;
+        .section-title h1 {
+            font-size: 2em;
             color: #8b4513;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
-        .header p {
-            font-size: 1.2em;
+        .section-title p {
+            font-size: 1em;
             color: #a0826d;
         }
 
@@ -559,14 +555,12 @@
 </head>
 <body>
     <div class="container">
-        <!-- 标题 -->
-        <div class="header">
-            <h1>📚 小朋友学汉字</h1>
-            <p>✏️ 看动画、学笔顺、练写字！</p>
-        </div>
-
-        <!-- 输入区域 -->
+        <!-- 输入区域（包含标题） -->
         <div class="input-section">
+            <div class="section-title">
+                <h1>📚 小朋友学汉字</h1>
+                <p>✏️ 看动画、学笔顺、练写字！</p>
+            </div>
             <h2>🔤 输入你要学习的汉字</h2>
             <div class="input-box">
                 <textarea
