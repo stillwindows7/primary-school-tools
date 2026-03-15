@@ -3,7 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📚 小朋友学汉字 - 笔顺学习助手</title>
+
+    <!-- SEO 基础标签 -->
+    <title>小朋友学汉字 - 笔顺动画学习工具 | 免费在线汉字笔顺教学</title>
+    <meta name="description" content="免费在线汉字笔顺学习工具，专为小朋友设计。展示汉字笔顺动画、拼音标注，支持多音字，帮助幼儿轻松学习汉字书写。">
+    <meta name="keywords" content="小朋友学汉字,汉字笔顺,笔顺动画,汉字学习,儿童教育,拼音学习,多音字,识字教学,小学语文,汉字书写">
+    <meta name="author" content="码媛知道">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="小朋友学汉字 - 笔顺动画学习工具">
+    <meta property="og:description" content="免费在线汉字笔顺学习工具，专为小朋友设计。展示汉字笔顺动画、拼音标注，支持多音字，帮助幼儿轻松学习汉字书写。">
+    <meta property="og:image" content="">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="小朋友学汉字 - 笔顺动画学习工具">
+    <meta name="twitter:description" content="免费在线汉字笔顺学习工具，专为小朋友设计。展示汉字笔顺动画、拼音标注，支持多音字，帮助幼儿轻松学习汉字书写。">
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "小朋友学汉字",
+      "description": "免费在线汉字笔顺学习工具，专为小朋友设计",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "码媛知道"
+      },
+      "educationalUse": " homework",
+      "educationalLevel": "Preschool",
+      "learningResourceType": "Interactive tool"
+    }
+    </script>
     <!--
         HanziWriter 库
         原始来源: https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js
@@ -676,37 +717,44 @@
 </head>
 <body>
     <div class="container">
-        <!-- 输入区域（包含标题） -->
-        <div class="input-section">
-            <div class="section-title">
-                <h1>📚 小朋友学汉字</h1>
-                <p>✏️ 看动画、学笔顺、练写字！</p>
-            </div>
-            <div class="input-box">
-                <textarea
-                    id="charInput"
-                    placeholder="输入要学习的汉字"
-                ></textarea>
-                <button class="btn btn-batch" id="batchBtn">🎬 顺序播放</button>
-                <button class="btn btn-batch-all" id="batchAllBtn">⏯️ 全部播放</button>
-                <button class="btn btn-clear" id="clearBtn">🗑️ 清空</button>
-            </div>
-            <div class="char-count">
-                已输入 <span id="charCount">0</span> 个汉字
-            </div>
-        </div>
+        <header>
+            <!-- 输入区域（包含标题） -->
+            <section class="input-section">
+                <div class="section-title">
+                    <h1>📚 小朋友学汉字</h1>
+                    <p>✏️ 看动画、学笔顺、练写字！</p>
+                </div>
+                <div class="input-box">
+                    <textarea
+                        id="charInput"
+                        placeholder="输入要学习的汉字"
+                        aria-label="输入要学习的汉字"
+                    ></textarea>
+                    <button class="btn btn-batch" id="batchBtn" aria-label="顺序播放">🎬 顺序播放</button>
+                    <button class="btn btn-batch-all" id="batchAllBtn" aria-label="全部播放">⏯️ 全部播放</button>
+                    <button class="btn btn-clear" id="clearBtn" aria-label="清空">🗑️ 清空</button>
+                </div>
+                <div class="char-count" aria-live="polite">
+                    已输入 <span id="charCount">0</span> 个汉字
+                </div>
+            </section>
+        </header>
+
+        <main>
 
         <!-- 错误提示 -->
-        <div class="error-message" id="errorMessage">
+        <div class="error-message" id="errorMessage" role="alert" aria-live="assertive">
             <p id="errorText"></p>
         </div>
 
         <!-- 汉字展示区域 -->
-        <div class="display-section" id="displaySection">
+        <section class="display-section" id="displaySection" aria-label="汉字展示区域">
             <div class="character-grid" id="characterGrid"></div>
-        </div>
+        </section>
+        </main>
 
         <!-- 版权信息 -->
+        <footer>
         <div class="footer">
             <p class="footer-link" onclick="toggleProfile()">
                 <span id="toggleIcon">📖</span>
@@ -756,7 +804,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </footer>
     </div>
 
     <script>
