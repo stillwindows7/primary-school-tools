@@ -559,6 +559,22 @@
             border-top: 2px solid #e0d8c8;
         }
 
+        .footer-link {
+            color: #a0826d;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 0;
+            font-size: 0.95em;
+        }
+
+        .footer-link:hover {
+            color: #8b4513;
+        }
+
+        .footer-link #toggleIcon {
+            margin-right: 5px;
+        }
+
         /* 个人简介区域 */
         .profile-section {
             margin-top: 30px;
@@ -575,37 +591,6 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        }
-
-        /* 展开/收起按钮 */
-        .btn-toggle-profile {
-            margin-top: 0;
-            padding: 10px 25px;
-            font-size: 0.95em;
-            background: #d4e5e0;
-            color: #5a6e68;
-            border: none;
-            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: bold;
-            position: relative;
-            box-shadow:
-                2px 2px 0 rgba(0, 0, 0, 0.1),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-toggle-profile:hover {
-            transform: scale(1.02);
-            background: #c5dbd4;
-        }
-
-        .btn-toggle-profile:active {
-            transform: scale(0.98);
-        }
-
-        .btn-toggle-profile #toggleIcon {
-            margin-right: 8px;
         }
 
         .profile-text {
@@ -719,10 +704,10 @@
 
         <!-- 版权信息 -->
         <div class="footer">
-            <button class="btn-toggle-profile" onclick="toggleProfile()">
+            <p class="footer-link" onclick="toggleProfile()">
                 <span id="toggleIcon">📖</span>
                 <span id="toggleText">版权所有 码媛知道 · 点击获取更多学习工具资料</span>
-            </button>
+            </p>
 
             <!-- 个人简介 -->
             <!--
