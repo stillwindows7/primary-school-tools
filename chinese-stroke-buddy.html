@@ -661,8 +661,9 @@
         window.createCharacterCard = async function(char, index) {
             const grid = document.getElementById('characterGrid');
 
-            // 获取拼音
-            const pinyin = pinyinPro.pinyin(char, { toneType: 'symbol', type: 'array' })[0];
+            // 获取所有拼音（包括多音字）
+            const pinyinList = pinyinPro.pinyin(char, { toneType: 'symbol', type: 'array', multiple: true });
+            const pinyin = pinyinList.join(' / ');
 
             // 根据屏幕宽度动态设置 SVG 参数
             const screenWidth = window.innerWidth;
