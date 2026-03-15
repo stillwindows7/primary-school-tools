@@ -291,18 +291,6 @@
             font-weight: bold;
             margin-bottom: 15px;
             letter-spacing: 2px;
-            cursor: pointer;
-            transition: transform 0.2s;
-            user-select: none;
-        }
-
-        .pinyin:hover {
-            transform: scale(1.1);
-            color: #e67e22;
-        }
-
-        .pinyin:active {
-            transform: scale(0.95);
         }
 
         .card-buttons {
@@ -720,10 +708,10 @@
                 '<div class="card-header">' +
                     '<div class="card-buttons">' +
                         '<button class="btn-sm btn-animate" onclick="animateCharacter(' + index + ')">▶️ 播放动画</button> ' +
-                        '<button class="btn-sm btn-speak" onclick="speakCharacter(\'' + char + '\', \'' + pinyin + '\')">🔊 朗读</button> ' +
+                        '<button class="btn-sm btn-speak" onclick="speakCharacter(\'' + char + '\')">🔊 朗读</button> ' +
                     '</div>' +
                     '<h3>' + char + '</h3>' +
-                    '<div class="pinyin" onclick="speakPinyin(\'' + pinyin + '\', \'' + char + '\')">' + pinyin + '</div>' +
+                    '<div class="pinyin">' + pinyin + '</div>' +
                 '</div>' +
                 '<div class="tianzige-container" id="tianzige-' + index + '" style="width:' + gridSize + 'px;height:' + gridSize + 'px">' +
                     '<div class="tianzige"></div>' +
@@ -793,63 +781,17 @@
             });
         };
 
-        window.speakCharacter = function(char, pinyin) {
+        window.speakCharacter = function(char) {
             if ('speechSynthesis' in window) {
                 // 停止当前正在播放的语音
                 window.speechSynthesis.cancel();
 
-                // 先读拼音，再读汉字
-                if (pinyin) {
-                    const pinyinUtterance = new SpeechSynthesisUtterance(pinyin);
-                    pinyinUtterance.lang = 'zh-CN';
-                    pinyinUtterance.rate = 0.9;
-                    pinyinUtterance.pitch = 1.3;
+                const utterance = new SpeechSynthesisUtterance(char);
+                utterance.lang = 'zh-CN';
+                utterance.rate = 0.8;
+                utterance.pitch = 1.2;
 
-                    const charUtterance = new SpeechSynthesisUtterance(char);
-                    charUtterance.lang = 'zh-CN';
-                    charUtterance.rate = 0.8;
-                    charUtterance.pitch = 1.2;
-
-                    pinyinUtterance.onend = function() {
-                        window.speechSynthesis.speak(charUtterance);
-                    };
-
-                    window.speechSynthesis.speak(pinyinUtterance);
-                } else {
-                    const utterance = new SpeechSynthesisUtterance(char);
-                    utterance.lang = 'zh-CN';
-                    utterance.rate = 0.8;
-                    utterance.pitch = 1.2;
-
-                    window.speechSynthesis.speak(utterance);
-                }
-            } else {
-                showError('⚠️ 您的浏览器不支持语音朗读功能');
-            }
-        };
-
-        // 点击拼音朗读
-        window.speakPinyin = function(pinyin, char) {
-            if ('speechSynthesis' in window) {
-                // 停止当前正在播放的语音
-                window.speechSynthesis.cancel();
-
-                // 先读拼音，再读汉字
-                const pinyinUtterance = new SpeechSynthesisUtterance(pinyin);
-                pinyinUtterance.lang = 'zh-CN';
-                pinyinUtterance.rate = 0.9;
-                pinyinUtterance.pitch = 1.3;
-
-                const charUtterance = new SpeechSynthesisUtterance(char);
-                charUtterance.lang = 'zh-CN';
-                charUtterance.rate = 0.8;
-                charUtterance.pitch = 1.2;
-
-                pinyinUtterance.onend = function() {
-                    window.speechSynthesis.speak(charUtterance);
-                };
-
-                window.speechSynthesis.speak(pinyinUtterance);
+                window.speechSynthesis.speak(utterance);
             } else {
                 showError('⚠️ 您的浏览器不支持语音朗读功能');
             }
