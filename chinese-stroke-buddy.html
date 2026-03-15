@@ -627,18 +627,18 @@
             overflow: hidden;
         }
 
+        .qrcode-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
         .qrcode-placeholder span {
             color: #a0826d;
             font-size: 0.9em;
             padding: 20px;
             text-align: center;
-        }
-
-        .qrcode-placeholder img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: none;
         }
 
         .qrcode-item p {
@@ -730,20 +730,23 @@
                 <!-- 社交媒体二维码 -->
                 <div class="qrcode-container">
                     <div class="qrcode-item">
-                        <div class="qrcode-placeholder" id="wechat-qrcode">
-                            <span>微信二维码</span>
+                        <div class="qrcode-placeholder">
+                            <img src="images/wechat.png" alt="微信二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <span style="display:none">微信二维码</span>
                         </div>
                         <p>微信</p>
                     </div>
                     <div class="qrcode-item">
-                        <div class="qrcode-placeholder" id="douyin-qrcode">
-                            <span>抖音二维码</span>
+                        <div class="qrcode-placeholder">
+                            <img src="images/douyin.png" alt="抖音二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <span style="display:none">抖音二维码</span>
                         </div>
                         <p>抖音</p>
                     </div>
                     <div class="qrcode-item">
-                        <div class="qrcode-placeholder" id="xiaohongshu-qrcode">
-                            <span>小红书二维码</span>
+                        <div class="qrcode-placeholder">
+                            <img src="images/xiaohongshu.png" alt="小红书二维码" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+                            <span style="display:none">小红书二维码</span>
                         </div>
                         <p>小红书</p>
                     </div>
