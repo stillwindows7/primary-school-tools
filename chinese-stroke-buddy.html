@@ -556,32 +556,7 @@
             text-align: center;
             padding: 30px 20px;
             margin-top: 50px;
-            color: #a0826d;
-            font-size: 0.95em;
             border-top: 2px solid #e0d8c8;
-        }
-
-        .footer p {
-            margin: 0;
-        }
-
-        .footer-top {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-top p {
-            padding: 10px 25px;
-            background: #c9b896;
-            color: #5d4e37;
-            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-            font-weight: bold;
-            box-shadow:
-                2px 2px 0 rgba(0, 0, 0, 0.1),
-                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
         }
 
         /* 个人简介区域 */
@@ -744,13 +719,10 @@
 
         <!-- 版权信息 -->
         <div class="footer">
-            <div class="footer-top">
-                <p>版权所有 码媛知道</p>
-                <button class="btn-toggle-profile" onclick="toggleProfile()">
-                    <span id="toggleIcon">📖</span>
-                    <span id="toggleText">点击获取更多学习工具资料</span>
-                </button>
-            </div>
+            <button class="btn-toggle-profile" onclick="toggleProfile()">
+                <span id="toggleIcon">📖</span>
+                <span id="toggleText">版权所有 码媛知道 · 点击获取更多学习工具资料</span>
+            </button>
 
             <!-- 个人简介 -->
             <!--
@@ -1158,7 +1130,7 @@
                 toggleIcon.textContent = '📕';
             } else {
                 profileSection.style.display = 'none';
-                toggleText.textContent = '点击获取更多学习工具资料';
+                toggleText.textContent = '版权所有 码媛知道 · 点击获取更多学习工具资料';
                 toggleIcon.textContent = '📖';
             }
         };
