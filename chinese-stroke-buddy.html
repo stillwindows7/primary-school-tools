@@ -573,6 +573,17 @@
             flex-wrap: wrap;
         }
 
+        .footer-top p {
+            padding: 10px 25px;
+            background: #c9b896;
+            color: #5d4e37;
+            border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+            font-weight: bold;
+            box-shadow:
+                2px 2px 0 rgba(0, 0, 0, 0.1),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.1);
+        }
+
         /* 个人简介区域 */
         .profile-section {
             margin-top: 30px;
@@ -737,7 +748,7 @@
                 <p>版权所有 码媛知道</p>
                 <button class="btn-toggle-profile" onclick="toggleProfile()">
                     <span id="toggleIcon">📖</span>
-                    <span id="toggleText">获取更多学习工具资料</span>
+                    <span id="toggleText">点击获取更多学习工具资料</span>
                 </button>
             </div>
 
@@ -1147,7 +1158,7 @@
                 toggleIcon.textContent = '📕';
             } else {
                 profileSection.style.display = 'none';
-                toggleText.textContent = '获取更多学习工具资料';
+                toggleText.textContent = '点击获取更多学习工具资料';
                 toggleIcon.textContent = '📖';
             }
         };
