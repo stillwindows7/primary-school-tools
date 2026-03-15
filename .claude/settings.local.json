@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "Bash(powershell:*)",
+      "Bash(python -c \"\nimport re\n\n# 读取文件\nwith open\\(''math-practice.html'', ''r'', encoding=''utf-8''\\) as f:\n    content = f.read\\(\\)\n\n# 找到要替换的部分的起始和结束标记\nstart_marker = ''// ==================== 震撼视觉特效系统 ====================''\nend_marker = ''// ==================== 初始化 ====================''\n\n# 找到位置\nstart_idx = content.find\\(start_marker\\)\nend_idx = content.find\\(end_marker\\)\n\nif start_idx == -1 or end_idx == -1:\n    print\\(''Markers not found''\\)\n    exit\\(1\\)\n\n# 找到起始行（包括前面的空行和闭合括号）\nline_start = content.rfind\\(''\\\\n'', 0, start_idx\\) + 1\n\n# 新的特效代码\nnew_effects = ''''''\n        // ==================== 超级视觉特效系统 ====================\n\n        // 粒子类 - 支持物理模拟\n        class Particle {\n            constructor\\(options\\) {\n                this.x = options.x || 50;\n                this.y = options.y || 50;\n                this.vx = options.vx || 0;\n                this.vy = options.vy || 0;\n                this.gravity = options.gravity || 0.5;\n                this.friction = options.friction || 0.98;\n                this.alpha = options.alpha || 1;\n                this.scale = options.scale || 1;\n                this.rotation = options.rotation || 0;\n                this.rotationSpeed = options.rotationSpeed || 0;\n                this.color = options.color || ''#FFD700'';\n                this.size = options.size || 10;\n                this.shape = options.shape || ''circle'';\n                this.element = None;\n            }\n\n            create\\(self\\):\n                pass\n''''''\n\nprint\\(''Found markers at positions:'', start_idx, end_idx\\)\n\")",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "Bash(New-Item -ItemType Directory -Path 'E:\\\\code\\\\primary-school-tools\\\\js' \")",
+      "Bash(cmd:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git pull:*)"
+    ]
+  }
+}

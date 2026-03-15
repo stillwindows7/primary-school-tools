@@ -9,8 +9,18 @@
 - **本地化日期**: 2026-03-15
 - **用途**: 汉字笔顺动画演示
 
+## pinyin-pro
+
+- **版本**: 3.27.0
+- **官方仓库**: https://github.com/zh-lx/pinyin-pro
+- **官方文档**: https://pinyin-pro.cn/
+- **原始 CDN 地址**: https://cdn.jsdelivr.net/npm/pinyin-pro@3.27.0/dist/index.js
+- **本地文件**: `pinyin-pro.js`
+- **本地化日期**: 2026-03-15
+- **用途**: 汉字转拼音，支持多音字和声调
+
 ### 更新说明
 
-如需更新到新版本，访问 [jsdelivr CDN](https://www.jsdelivr.com/package/npm/hanzi-writer) 下载最新版本替换本地文件。
+如需更新到新版本，访问对应的 [jsdelivr CDN](https://www.jsdelivr.com/package/npm/hanzi-writer) 或 [pinyin-pro CDN](https://www.jsdelivr.com/package/npm/pinyin-pro) 下载最新版本替换本地文件。
 
 文件较大，已提交到 Git，确保离线环境可用。

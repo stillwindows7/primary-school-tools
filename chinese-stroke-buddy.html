@@ -12,6 +12,14 @@
         更新日期: 2026-03-15
     -->
     <script src="lib/hanzi-writer.min.js"></script>
+    <!--
+        pinyin-pro 库
+        原始来源: https://cdn.jsdelivr.net/npm/pinyin-pro@3.27.0/dist/index.js
+        版本: 3.27.0
+        本地化: lib/pinyin-pro.js
+        更新日期: 2026-03-15
+    -->
+    <script src="lib/pinyin-pro.js"></script>
     <style>
         * {
             margin: 0;
@@ -273,7 +281,28 @@
         .card-header h3 {
             font-size: 3em;
             color: #8b4513;
+            margin-bottom: 5px;
+        }
+
+        /* 拼音样式 */
+        .pinyin {
+            font-size: 1.8em;
+            color: #d35400;
+            font-weight: bold;
             margin-bottom: 15px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            user-select: none;
+        }
+
+        .pinyin:hover {
+            transform: scale(1.1);
+            color: #e67e22;
+        }
+
+        .pinyin:active {
+            transform: scale(0.95);
         }
 
         .card-buttons {
@@ -507,6 +536,10 @@
                 margin-bottom: 10px;
             }
 
+            .pinyin {
+                font-size: 1.3em;
+            }
+
             .btn-sm {
                 padding: 8px 15px;
                 font-size: 0.9em;
@@ -537,6 +570,10 @@
 
             .card-header h3 {
                 font-size: 1.8em;
+            }
+
+            .pinyin {
+                font-size: 1.1em;
             }
 
             .btn-sm {
@@ -651,6 +688,9 @@
         window.createCharacterCard = async function(char, index) {
             const grid = document.getElementById('characterGrid');
 
+            // 获取拼音
+            const pinyin = pinyinPro.pinyin(char, { toneType: 'symbol', type: 'array' })[0];
+
             // 根据屏幕宽度动态设置田字格大小
             const screenWidth = window.innerWidth;
             let gridSize = 220;
@@ -680,8 +720,10 @@
                 '<div class="card-header">' +
                     '<div class="card-buttons">' +
                         '<button class="btn-sm btn-animate" onclick="animateCharacter(' + index + ')">▶️ 播放动画</button> ' +
-                        '<button class="btn-sm btn-speak" onclick="speakCharacter(\'' + char + '\')">🔊 朗读</button> ' +
+                        '<button class="btn-sm btn-speak" onclick="speakCharacter(\'' + char + '\', \'' + pinyin + '\')">🔊 朗读</button> ' +
                     '</div>' +
+                    '<h3>' + char + '</h3>' +
+                    '<div class="pinyin" onclick="speakPinyin(\'' + pinyin + '\', \'' + char + '\')">' + pinyin + '</div>' +
                 '</div>' +
                 '<div class="tianzige-container" id="tianzige-' + index + '" style="width:' + gridSize + 'px;height:' + gridSize + 'px">' +
                     '<div class="tianzige"></div>' +
@@ -751,17 +793,63 @@
             });
         };
 
-        window.speakCharacter = function(char) {
+        window.speakCharacter = function(char, pinyin) {
             if ('speechSynthesis' in window) {
                 // 停止当前正在播放的语音
                 window.speechSynthesis.cancel();
 
-                const utterance = new SpeechSynthesisUtterance(char);
-                utterance.lang = 'zh-CN';
-                utterance.rate = 0.8;
-                utterance.pitch = 1.2;
+                // 先读拼音，再读汉字
+                if (pinyin) {
+                    const pinyinUtterance = new SpeechSynthesisUtterance(pinyin);
+                    pinyinUtterance.lang = 'zh-CN';
+                    pinyinUtterance.rate = 0.9;
+                    pinyinUtterance.pitch = 1.3;
 
-                window.speechSynthesis.speak(utterance);
+                    const charUtterance = new SpeechSynthesisUtterance(char);
+                    charUtterance.lang = 'zh-CN';
+                    charUtterance.rate = 0.8;
+                    charUtterance.pitch = 1.2;
+
+                    pinyinUtterance.onend = function() {
+                        window.speechSynthesis.speak(charUtterance);
+                    };
+
+                    window.speechSynthesis.speak(pinyinUtterance);
+                } else {
+                    const utterance = new SpeechSynthesisUtterance(char);
+                    utterance.lang = 'zh-CN';
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1.2;
+
+                    window.speechSynthesis.speak(utterance);
+                }
+            } else {
+                showError('⚠️ 您的浏览器不支持语音朗读功能');
+            }
+        };
+
+        // 点击拼音朗读
+        window.speakPinyin = function(pinyin, char) {
+            if ('speechSynthesis' in window) {
+                // 停止当前正在播放的语音
+                window.speechSynthesis.cancel();
+
+                // 先读拼音，再读汉字
+                const pinyinUtterance = new SpeechSynthesisUtterance(pinyin);
+                pinyinUtterance.lang = 'zh-CN';
+                pinyinUtterance.rate = 0.9;
+                pinyinUtterance.pitch = 1.3;
+
+                const charUtterance = new SpeechSynthesisUtterance(char);
+                charUtterance.lang = 'zh-CN';
+                charUtterance.rate = 0.8;
+                charUtterance.pitch = 1.2;
+
+                pinyinUtterance.onend = function() {
+                    window.speechSynthesis.speak(charUtterance);
+                };
+
+                window.speechSynthesis.speak(pinyinUtterance);
             } else {
                 showError('⚠️ 您的浏览器不支持语音朗读功能');
             }
